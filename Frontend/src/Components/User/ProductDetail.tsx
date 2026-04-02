@@ -5,7 +5,6 @@ import { cn } from "../../lib/util"
 import { useParams, Link } from "react-router-dom"
 import axios from "axios"
 import { baseurl } from "../../Constant/Base"
-import NavBar from "../Layouts/Navbar"
 import Footer from "../Layouts/Footer"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "react-hot-toast"
@@ -831,7 +830,7 @@ I'm interested in this product. Could you please provide more information?`)
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <NavBar />
+
       
       <AnimatePresence>
         {showToast && (

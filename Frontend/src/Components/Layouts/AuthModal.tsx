@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import { GoogleLogin } from '@react-oauth/google';
 import { X, ArrowRight, Mail, Lock, User, Phone } from 'lucide-react';
+<<<<<<< HEAD
 import { ClientId, baseurl } from "../../Constant/Base";
 
 const API_BASE_URL = baseurl;
 const GOOGLE_CLIENT_ID = ClientId;
+=======
+import {  baseurl } from "../../Constant/Base";
+
+const API_BASE_URL = baseurl;
+// const GOOGLE_CLIENT_ID = ClientId;
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -386,6 +393,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                 
                 <div className="space-y-3">
                   <div className="bg-white rounded-xl p-1">
+<<<<<<< HEAD
                     <GoogleLogin
                       clientId={GOOGLE_CLIENT_ID}
                       onSuccess={handleGoogleSuccess}
@@ -395,6 +403,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
                       width="100%"
                       text="signin_with"
                     />
+=======
+                  <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                theme="filled_blue"
+                size="large"
+                width="100%"
+                text="signup_with"
+              />
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                   </div>
                 </div>
               </form>
@@ -499,6 +517,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                 
                 <div className="space-y-3">
                   <div className="bg-white rounded-xl p-1">
+<<<<<<< HEAD
                     <GoogleLogin
                       clientId={GOOGLE_CLIENT_ID}
                       onSuccess={handleGoogleSuccess}
@@ -508,6 +527,17 @@ const AuthModal: React.FC<AuthModalProps> = ({
                       width="100%"
                       text="signup_with"
                     />
+=======
+                  <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  theme="filled_blue"
+                  size="large"
+                  width="100%"
+                  text="signup_with"
+                />
+
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                   </div>
                   
                   <div className="flex items-center justify-center gap-2">

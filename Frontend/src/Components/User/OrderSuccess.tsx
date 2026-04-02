@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CheckCircle, ShoppingBag, Home, Package, Truck, Clock, ChevronRight } from 'lucide-react';
 import NavBar from '../Layouts/Navbar';
+=======
+import  { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CheckCircle, ShoppingBag, Home, Package, Truck, Clock, ChevronRight } from 'lucide-react';
+
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
@@ -56,7 +63,11 @@ const OrderSuccess = () => {
     if (orderId) {
       fetchOrderDetails();
     } else {
+<<<<<<< HEAD
       navigate('/orders');
+=======
+      navigate('/profile');
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
     }
   }, [orderId]);
 
@@ -89,7 +100,11 @@ const OrderSuccess = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
+<<<<<<< HEAD
         <NavBar />
+=======
+
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-[80px] pb-24">
           <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
         </div>
@@ -101,12 +116,19 @@ const OrderSuccess = () => {
   if (!order) {
     return (
       <div className="min-h-screen flex flex-col">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-[80px] pb-24">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Not Found</h2>
             <button
+<<<<<<< HEAD
               onClick={() => navigate('/orders')}
+=======
+              onClick={() =>       navigate('/profile', { state: { activeTab: 'orders' } })}
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
               className="bg-black text-white hover:bg-gray-900 px-6 py-2 rounded-lg"
             >
               View All Orders
@@ -120,7 +142,10 @@ const OrderSuccess = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+<<<<<<< HEAD
       <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <div className="h-[80px]"></div>
       
       <main className="flex-grow pb-24">
@@ -288,14 +313,23 @@ const OrderSuccess = () => {
 
               <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
                 <button
+<<<<<<< HEAD
                   onClick={() => navigate('/orders')}
                   className="flex-1 bg-black text-white hover:bg-gray-900 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+=======
+              onClick={() =>       navigate('/profile', { state: { activeTab: 'orders' } })}
+              className="flex-1 bg-black text-white hover:bg-gray-900 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                 >
                   <ShoppingBag className="h-4 w-4" />
                   View All Orders
                 </button>
                 <button
+<<<<<<< HEAD
                   onClick={() => navigate('/shop')}
+=======
+                  onClick={() => navigate('/')}
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                   className="flex-1 bg-white text-black hover:bg-gray-50 border border-gray-300 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                 >
                   <Home className="h-4 w-4" />

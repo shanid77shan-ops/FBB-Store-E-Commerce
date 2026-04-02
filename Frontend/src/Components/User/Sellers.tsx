@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseurl } from "../../Constant/Base";
-import NavBar from "../Layouts/Navbar";
 import Footer from "../Layouts/Footer";
 import { 
   Search, 
@@ -175,7 +174,6 @@ const SellerPages: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavBar />
       
       <div className="relative h-[400px] md:h-[500px] overflow-hidden">
         <AnimatePresence initial={false}>

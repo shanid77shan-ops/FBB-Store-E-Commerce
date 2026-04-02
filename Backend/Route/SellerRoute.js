@@ -15,15 +15,10 @@ import {
   getSellerOrders,
   updateOrderStatus,
   getSellerDashboardStats,
-<<<<<<< HEAD
-  getSellerProfile
-} from "../Controller/SellerController.js";
-=======
   getSellerProfile,
   getSalesReport
 } from "../Controller/SellerController.js";
 import { sellerAuthMiddleware } from "../Middleware/SellerAuth.js";
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 dotenv.config();
 

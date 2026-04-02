@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
+=======
+import { useState, useEffect } from 'react';
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   ShoppingBag, Trash2, Plus, Minus, ArrowLeft, Shield, Truck, 
@@ -6,7 +10,10 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
+<<<<<<< HEAD
 import NavBar from '../Layouts/Navbar';
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 
@@ -146,7 +153,14 @@ const CartPage = () => {
 
   const moveToWishlist = async (productId: string) => {
     try {
+<<<<<<< HEAD
       await api.post('/cart/wishlist/add', { productId });
+=======
+      await api.post('/wishlist/add', { productId },{
+        headers: { Authorization: `Bearer ${token}` }
+
+      });
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       await removeItem(productId);
       toast.success('Moved to wishlist');
     } catch (error) {
@@ -157,7 +171,14 @@ const CartPage = () => {
 
   const clearCart = async () => {
     try {
+<<<<<<< HEAD
       await api.delete('/cart/cart/clear');
+=======
+      await api.delete('/cart/clear',{
+        headers: { Authorization: `Bearer ${token}` }
+
+      });
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       toast.success('Cart cleared');
       await fetchCartData();
     } catch (error) {
@@ -172,7 +193,10 @@ const CartPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-[80px] pb-24">
           <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
         </div>
@@ -184,7 +208,10 @@ const CartPage = () => {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen flex flex-col">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex flex-col items-center justify-center px-4 mt-[80px] pb-24">
           <div className="text-center max-w-md">
             <ShoppingBag className="h-24 w-24 text-gray-400 mx-auto mb-6" />
@@ -216,9 +243,14 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+<<<<<<< HEAD
       <NavBar />
       
       {/* Add a spacer div that matches navbar height */}
+=======
+ 
+      
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <div className="h-[80px]"></div>
       
       <main className="flex-grow pb-24">

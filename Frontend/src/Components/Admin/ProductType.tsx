@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { PlusCircle, X, Upload } from 'lucide-react';
-import { Sidebar } from './Sidebar';
 import { baseurl } from '../../Constant/Base';
 import axios from "axios";
 
@@ -153,7 +152,6 @@ const ProductType = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-      <Sidebar />
       
       <main className="flex-1 p-8">
         <header className="mb-8">

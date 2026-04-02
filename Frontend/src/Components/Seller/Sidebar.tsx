@@ -1,102 +1,114 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { MessageCircle } from 'lucide-react';
-// import { baseurl } from '../../Constant/Base';
-// import axios from 'axios';
-// import { useGetToken } from '../../Token/getToken';
-// import ExtractToken from '../../Token/Extract';
-// import { useEffect, useState } from 'react';
+// components/SellerSidebar.tsx
+import React from 'react';
+import { 
+  BarChart3, Package, ShoppingBag, TrendingUp, 
+  LogOut, Phone, X
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export const Sidebar = () => {
+interface SellerSidebarProps {
+  activePage: 'dashboard' | 'products' | 'orders' | 'sales-report';
+  onClose?: () => void;
+}
+
+export const SellerSidebar: React.FC<SellerSidebarProps> = ({ activePage, onClose }) => {
   const navigate = useNavigate();
-  const whatsappNumber = '7012551507';
-//   const [seller,setSeller] = useState("")
 
-//   const api = axios.create({
-//     baseURL: baseurl,
-//   });
-
-//   const token = useGetToken("sellerToken")
-//   console.log(typeof token,"may here")
-
-//   const sellerId = ExtractToken(token)
-
-
-//   const getSeller = async()=>{
-//     try {
-//         const response = await api.get(`/admin/get-seller/${sellerId.userId}`)
-//         console.log(response)
-//         setSeller(response.data.name)
-//     } catch (error) {
-        
-//     }
-// }
-
-// useEffect(()=>{
-//     getSeller()
-// },[])
-  const menuItems = [
-    { name: 'Dashboard', path: '/seller/dashboard' },
-    { name: 'Product', path: '/seller/product' },
-    // { name: 'Sub-Category', path: '/admin/sub-category' },
-  ];
-
-  const handleLogout = () => {
-    localStorage.clear();
+  const handleLogout = (): void => {
+    localStorage.removeItem('sellerToken');
     navigate('/seller/');
   };
 
-  const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${whatsappNumber}`, '_blank');
-  };
+  const isActive = (page: string): boolean => activePage === page;
 
   return (
-    <aside className="w-full md:w-64 bg-white shadow-lg h-screen flex flex-col">
-      <div className="p-6 flex-1">
-        <div className="flex items-center space-x-2 mb-8">
-          <h1 className="text-gray-800 text-2xl font-bold">FBB</h1>
-          <span className="text-blue-600 text-2xl font-bold">STORE</span>
+    <div className="h-full flex flex-col bg-white border-r border-gray-200">
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">FBB STORE</h1>
+            <p className="text-sm text-gray-500 mt-1">Seller Dashboard</p>
+          </div>
+          {onClose && (
+            <button 
+              onClick={onClose}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+            >
+              <X size={24} />
+            </button>
+          )}
         </div>
-        
-        <nav>
-          <ul className="space-y-2">
-            {menuItems.map(({ name, path }) => (
-              <li key={name}>
-                <NavLink
-                  to={path}
-                  className={({ isActive }) =>
-                    `block py-3 px-4 rounded-lg transition-all ${
-                      isActive
-                        ? 'bg-blue-50 text-blue-600 font-semibold shadow-sm'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`
-                  }
-                >
-                  {name}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+      </div>
+
+      <div className="flex-1 p-4 overflow-y-auto">
+        <nav className="space-y-1">
+          <button 
+            onClick={() => navigate('/seller/dashboard')}
+            className={`w-full text-left py-3 px-4 rounded-lg transition-all flex items-center space-x-3 ${
+              isActive('dashboard') 
+                ? 'bg-blue-50 text-blue-600 font-semibold' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <BarChart3 size={20} />
+            <span>Dashboard</span>
+          </button>
+          
+          <button 
+            onClick={() => navigate('/seller/product')}
+            className={`w-full text-left py-3 px-4 rounded-lg transition-all flex items-center space-x-3 ${
+              isActive('products') 
+                ? 'bg-blue-50 text-blue-600 font-semibold' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <Package size={20} />
+            <span>Products</span>
+          </button>
+          
+          <button 
+            onClick={() => navigate('/seller/orders')}
+            className={`w-full text-left py-3 px-4 rounded-lg transition-all flex items-center space-x-3 ${
+              isActive('orders') 
+                ? 'bg-blue-50 text-blue-600 font-semibold' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <ShoppingBag size={20} />
+            <span>Orders</span>
+          </button>
+          
+          <button 
+            onClick={() => navigate('/seller/sales-report')}
+            className={`w-full text-left py-3 px-4 rounded-lg transition-all flex items-center space-x-3 ${
+              isActive('sales-report') 
+                ? 'bg-blue-50 text-blue-600 font-semibold' 
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <TrendingUp size={20} />
+            <span>Sales Report</span>
+          </button>
         </nav>
       </div>
-      
-      <div className="p-6 border-t space-y-3">
+
+      <div className="p-4 border-t border-gray-200 space-y-3">
         <button
-          onClick={handleWhatsAppClick}
-          className="w-full py-3 px-4 rounded-lg text-green-600 hover:bg-green-50 transition-all font-medium flex items-center justify-center space-x-2"
+          onClick={() => window.open(`https://wa.me/7012551507`, '_blank')}
+          className="w-full py-3 px-4 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all flex items-center justify-center space-x-2"
         >
-          <MessageCircle className="w-5 h-5" />
+          <Phone size={20} />
           <span>Contact Admin</span>
         </button>
         
         <button
           onClick={handleLogout}
-          className="w-full py-3 px-4 rounded-lg text-red-600 hover:bg-red-50 transition-all font-medium flex items-center justify-center"
+          className="w-full py-3 px-4 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-all flex items-center justify-center space-x-2"
         >
-          Logout
+          <LogOut size={20} />
+          <span>Logout</span>
         </button>
       </div>
-    </aside>
+    </div>
   );
 };
-
-export default Sidebar;

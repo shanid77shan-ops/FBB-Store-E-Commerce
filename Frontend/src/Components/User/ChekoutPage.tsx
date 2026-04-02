@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { CreditCard, Truck, Package, Shield, Lock, ChevronRight, MapPin, Home } from 'lucide-react';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
+<<<<<<< HEAD
 import NavBar from '../Layouts/Navbar';
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 
@@ -207,7 +210,11 @@ const CheckoutPage = () => {
           }
 
           const options = {
+<<<<<<< HEAD
             key: "rzp_test_Rgm99jMXnxSkGK" || response.data.key_id,
+=======
+            key: response.data.key_id,
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
             amount: response.data.razorpayOrder.amount,
             currency: response.data.razorpayOrder.currency,
             name: "Your Store Name",
@@ -219,7 +226,11 @@ const CheckoutPage = () => {
                   razorpay_order_id: paymentResponse.razorpay_order_id,
                   razorpay_payment_id: paymentResponse.razorpay_payment_id,
                   razorpay_signature: paymentResponse.razorpay_signature,
+<<<<<<< HEAD
                   orderId: response.data.order.orderId
+=======
+                  orderId: response.data.razorpayOrder.receipt
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                 }, {
                   headers: token ? { 
                     Authorization: `Bearer ${token}`,
@@ -229,7 +240,11 @@ const CheckoutPage = () => {
 
                 if (verifyResponse.data.success) {
                   navigate('/order-success', { 
+<<<<<<< HEAD
                     state: { orderId: response.data.order.orderId }
+=======
+                    state: { orderId: verifyResponse.data.order.orderId }
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                   });
                 } else {
                   toast.error('Payment verification failed');
@@ -237,6 +252,11 @@ const CheckoutPage = () => {
               } catch (error) {
                 console.error('Error verifying payment:', error);
                 toast.error('Payment verification failed');
+<<<<<<< HEAD
+=======
+              } finally {
+                setLoading(false);
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
               }
             },
             prefill: {
@@ -268,9 +288,17 @@ const CheckoutPage = () => {
           navigate('/order-success', { 
             state: { orderId: response.data.order.orderId }
           });
+<<<<<<< HEAD
         }
       } else {
         toast.error(response.data.message || 'Failed to create order');
+=======
+          setLoading(false);
+        }
+      } else {
+        toast.error(response.data.message || 'Failed to create order');
+        setLoading(false);
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       }
     } catch (error: any) {
       console.error('Error placing order:', error);
@@ -280,17 +308,24 @@ const CheckoutPage = () => {
       } else {
         toast.error(error.response?.data?.message || 'Failed to place order');
       }
+<<<<<<< HEAD
       
     } finally {
       if (paymentMethod === 'cod') {
         setLoading(false);
       }
+=======
+      setLoading(false);
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+<<<<<<< HEAD
       <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <div className="h-[80px]"></div>
       
       <main className="flex-grow pb-24">

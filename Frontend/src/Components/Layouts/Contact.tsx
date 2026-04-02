@@ -1,6 +1,5 @@
 import { MapPin, Phone,  Clock, MessageSquare, Send, Sparkles } from "lucide-react"
 import Footer from "../Layouts/Footer"
-import NavBar from "../Layouts/Navbar"
 import { motion } from "framer-motion"
 import { useState } from "react"
 
@@ -82,7 +81,6 @@ const ContactPage = () => {
 
   return (
     <>
-      <NavBar />
       <div className="min-h-screen bg-white mt-16">
         {/* Hero Section */}
         <div className="relative h-[300px] md:h-[400px] overflow-hidden bg-black">

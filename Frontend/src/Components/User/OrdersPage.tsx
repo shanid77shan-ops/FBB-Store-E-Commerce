@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, Clock, Truck, CheckCircle, ChevronRight, ShoppingBag } from 'lucide-react';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
 import NavBar from '../Layouts/Navbar';
+=======
+import  { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Package, Clock, Truck, CheckCircle, ShoppingBag } from 'lucide-react';
+import axios from 'axios';
+import { baseurl } from '../../Constant/Base';
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 
@@ -94,7 +102,10 @@ const OrdersPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-black">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-[80px] pb-24">
           <div className="w-16 h-16 border-4 border-gray-800 border-t-white rounded-full animate-spin"></div>
         </div>
@@ -105,7 +116,11 @@ const OrdersPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
+<<<<<<< HEAD
       <NavBar />
+=======
+
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <div className="h-[80px]"></div>
       
       <main className="flex-grow pb-24">

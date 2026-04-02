@@ -1,6 +1,5 @@
 import { MapPin, Phone, Mail, Clock, Instagram, Users, Award, Globe, Shield,Star, Quote } from "lucide-react"
 import Footer from "./Footer"
-import NavBar from "./Navbar"
 import { motion } from "framer-motion"
 import { RiStarFill } from "react-icons/ri"
 
@@ -86,7 +85,7 @@ const AboutPage = () => {
 
   return (
     <>
-      <NavBar />
+ 
       <div className="min-h-screen bg-white mt-16">
         {/* Hero Section */}
         <div className="relative h-[400px] md:h-[500px] overflow-hidden bg-black">

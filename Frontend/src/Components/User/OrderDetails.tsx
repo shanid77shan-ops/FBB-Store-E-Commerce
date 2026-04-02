@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
+=======
+import  { useEffect, useState } from 'react';
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import { useParams, useNavigate } from 'react-router-dom';
 import { Package, Truck, CheckCircle, Clock, MapPin, CreditCard, Download, Printer, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
+<<<<<<< HEAD
 import NavBar from '../Layouts/Navbar';
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 
@@ -125,7 +132,10 @@ const OrderDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-[80px] pb-24">
           <div className="w-16 h-16 border-4 border-gray-800 border-t-white rounded-full animate-spin"></div>
         </div>
@@ -137,7 +147,10 @@ const OrderDetails = () => {
   if (!order) {
     return (
       <div className="min-h-screen flex flex-col bg-black text-white">
+<<<<<<< HEAD
         <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex flex-col items-center justify-center mt-[80px] pb-24">
           <h2 className="text-2xl font-bold mb-4">Order Not Found</h2>
           <button
@@ -154,7 +167,10 @@ const OrderDetails = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
+<<<<<<< HEAD
       <NavBar />
+=======
+>>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <div className="h-[80px]"></div>
       
       <main className="flex-grow pb-24">

@@ -2,7 +2,6 @@ import { Heart, ChevronRight, Star, Grid, List, X } from "lucide-react"
 import { useEffect, useState, useCallback } from "react"
 import { useNavigate, useParams, Link } from "react-router-dom"
 import Footer from "../Layouts/Footer"
-import NavBar from "../Layouts/Navbar"
 // import { Button } from "../Layouts/button"
 import { baseurl } from "../../Constant/Base"
 import axios from "axios"
@@ -309,7 +308,7 @@ export default function FilterProduct() {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavBar />
+  
       
       <div className="relative h-[300px] md:h-[400px] overflow-hidden bg-black">
         <motion.div

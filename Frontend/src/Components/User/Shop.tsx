@@ -2,7 +2,6 @@ import { Heart, Filter, Search, ArrowRight, Star, Grid, List, X, Sparkles, Award
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Footer from "../Layouts/Footer"
-import NavBar from "../Layouts/Navbar"
 import { baseurl } from "../../Constant/Base"
 import axios from "axios"
 import { motion, AnimatePresence } from "framer-motion"
@@ -182,7 +181,6 @@ export default function ShopLayout() {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavBar />
       
       <div className="relative h-[300px] md:h-[400px] overflow-hidden bg-black">
         <motion.div
