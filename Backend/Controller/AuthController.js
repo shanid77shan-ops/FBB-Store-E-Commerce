@@ -2,7 +2,6 @@ import UserModel from "../Model/UserModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { OAuth2Client } from "google-auth-library";
-<<<<<<< HEAD
 import { 
   sendOtpEmail, 
   sendOrderConfirmationEmail, 
@@ -10,11 +9,9 @@ import {
   sendPasswordResetEmail,
   sendOrderStatusUpdateEmail 
 } from "../Utils/emailService.js";
-=======
 
 import emailService from "../Utils/emailService.js";
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
