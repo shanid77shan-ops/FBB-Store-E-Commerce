@@ -5,10 +5,7 @@ import AdminModel from "../Model/AdminModel.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import SellerModel from "../Model/SellerModel.js";
-<<<<<<< HEAD
-=======
 import OrderModel from "../Model/OrderModel.js";
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export const addCategory = async (req, res) => {
   try {
