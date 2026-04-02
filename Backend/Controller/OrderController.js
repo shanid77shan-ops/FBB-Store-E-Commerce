@@ -4,11 +4,6 @@ import UserModel from "../Model/UserModel.js";
 import SellerModel from "../Model/SellerModel.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
-<<<<<<< HEAD
-import { sendOrderConfirmationEmail, sendSellerNewOrderEmail } from "../utils/emailService.js";
-import Razorpay from "razorpay";
-
-=======
 import emailService from "../Utils/emailService.js";
 import Razorpay from "razorpay";
 
@@ -17,7 +12,6 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 const generateOrderId = () => {
   return `ORD${Date.now()}${crypto.randomInt(1000, 9999)}`;
 };
