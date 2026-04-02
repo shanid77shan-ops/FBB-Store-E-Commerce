@@ -4,21 +4,11 @@ import OrderModel from "../Model/OrderModel.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
-<<<<<<< HEAD
-// Helper function to get user - supports both auth token and cookie-based
 const getUser = async (req) => {
-  // First try to get user from auth token (for logged-in users)
-=======
-const getUser = async (req) => {
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
   if (req.user && req.user._id) {
     return await UserModel.findById(req.user._id);
   }
   
-<<<<<<< HEAD
-  // If no auth token, try cookies (for guest users)
-=======
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
   const { deviceId, sessionToken } = req.cookies || {};
   
   if (deviceId || sessionToken) {
