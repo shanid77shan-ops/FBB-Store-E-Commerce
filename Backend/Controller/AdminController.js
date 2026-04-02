@@ -263,9 +263,6 @@ export const getProducts = async(req,res)=>{
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
-<<<<<<< HEAD
-}
-=======
 }
 
 
@@ -415,4 +412,3 @@ export const getOrderStatistics = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
