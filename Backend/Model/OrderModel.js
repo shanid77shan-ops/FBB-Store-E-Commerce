@@ -77,7 +77,11 @@ const SellerOrderSchema = new mongoose.Schema(
     },
     sellerStatus: {
       type: String,
+<<<<<<< HEAD
       enum: ["pending", "accepted", "rejected", "processing", "completed"],
+=======
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       default: "pending"
     }
   },
@@ -153,7 +157,11 @@ const OrderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+<<<<<<< HEAD
       enum: ["pending", "processing", "partially_shipped", "shipped", "delivered", "cancelled", "returned"],
+=======
+      enum: ["temporary", "pending", "processing", "partially_shipped", "shipped", "delivered", "cancelled", "returned"],
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       default: "pending"
     },
     notes: String,
@@ -167,4 +175,8 @@ const OrderSchema = new mongoose.Schema(
 );
 
 const OrderModel = mongoose.model("Order", OrderSchema);
+<<<<<<< HEAD
 export default OrderModel;
+=======
+export default OrderModel;
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff

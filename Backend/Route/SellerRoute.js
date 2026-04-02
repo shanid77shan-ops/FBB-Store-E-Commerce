@@ -15,8 +15,15 @@ import {
   getSellerOrders,
   updateOrderStatus,
   getSellerDashboardStats,
+<<<<<<< HEAD
   getSellerProfile
 } from "../Controller/SellerController.js";
+=======
+  getSellerProfile,
+  getSalesReport
+} from "../Controller/SellerController.js";
+import { sellerAuthMiddleware } from "../Middleware/SellerAuth.js";
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 dotenv.config();
 
@@ -80,6 +87,7 @@ SellerRouter.post("/register", SignUp);
 SellerRouter.post("/login", login);
 SellerRouter.post('/reset-password/:userId', resetPassword);
 
+<<<<<<< HEAD
 SellerRouter.get('/profile/:id', getSellerProfile);
 SellerRouter.put('/update-profile/:userId', profileImageUpload.single('profileImage'), updateProfile);
 
@@ -91,5 +99,19 @@ SellerRouter.delete("/delete-product/:id", deleteProduct);
 SellerRouter.get("/orders", getSellerOrders);
 SellerRouter.post("/orders/update-status", updateOrderStatus);
 SellerRouter.get("/dashboard/stats", getSellerDashboardStats);
+=======
+SellerRouter.get('/profile/:id',sellerAuthMiddleware, getSellerProfile);
+SellerRouter.put('/update-profile/:userId', profileImageUpload.single('profileImage'), updateProfile);
+
+SellerRouter.post("/add-product", handleProductMedia, addProduct);
+SellerRouter.get("/get-products/:id",sellerAuthMiddleware ,getProducts);
+SellerRouter.put("/edit-product/:id", handleProductMedia, updateProduct);
+SellerRouter.delete("/delete-product/:id", deleteProduct);
+
+SellerRouter.get("/orders",sellerAuthMiddleware, getSellerOrders);
+SellerRouter.post("/orders/update-status",sellerAuthMiddleware, updateOrderStatus);
+SellerRouter.get("/dashboard/stats",sellerAuthMiddleware, getSellerDashboardStats);
+SellerRouter.get("/sales-report",sellerAuthMiddleware, getSalesReport);
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export default SellerRouter;

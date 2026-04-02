@@ -26,7 +26,7 @@ const allowedOrigins = [
   'https://flybuybrand.com',
   'https://www.flybuybrand.com',
   'https://fbb-store-e-commerce.vercel.app',     
-  'https://your-frontend.vercel.app'           
+  'https://fbb-store.vercel.app'           
 ];
 
 app.use(cors({

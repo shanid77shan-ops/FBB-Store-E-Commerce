@@ -39,7 +39,17 @@ import {
     updateProfile,
     verifyToken,
     verifyEmail,
+<<<<<<< HEAD
     resendOtp
+=======
+    resendOtp,
+    getAddresses,
+    addAddress,
+    updateAddress,
+    deleteAddress,
+    setDefaultAddress,
+    updatePassword
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 } from "../Controller/AuthController.js";
 
 import {
@@ -52,7 +62,11 @@ import {
     updateOrderStatus,
     getOrderDetails,
     requestReturn,
+<<<<<<< HEAD
     trackOrder
+=======
+    trackOrder,
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 } from "../Controller/OrderController.js";
 
 import { authMiddleware } from "../Middleware/Auth.js";
@@ -107,6 +121,16 @@ UserRoute.post("/order/:orderId/return", authMiddleware, requestReturn);
 UserRoute.get("/order/:orderId/track", authMiddleware, trackOrder);
 UserRoute.post("/order/update-status", authMiddleware, updateOrderStatus);
 
+<<<<<<< HEAD
+=======
+UserRoute.get("/profile/addresses", authMiddleware, getAddresses);
+UserRoute.post("/profile/addresses", authMiddleware, addAddress);
+UserRoute.put("/profile/addresses/:id", authMiddleware, updateAddress);
+UserRoute.delete("/profile/addresses/:id", authMiddleware, deleteAddress);
+UserRoute.put("/profile/addresses/:id/default", authMiddleware, setDefaultAddress);
+UserRoute.put("/profile/password", authMiddleware, updatePassword);
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 UserRoute.get("/clear-cache", clearCacheHandler);
 
 UserRoute.get("/get-product", getProduct);

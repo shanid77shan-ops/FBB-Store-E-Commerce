@@ -5,6 +5,10 @@ import AdminModel from "../Model/AdminModel.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import SellerModel from "../Model/SellerModel.js";
+<<<<<<< HEAD
+=======
+import OrderModel from "../Model/OrderModel.js";
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export const addCategory = async (req, res) => {
   try {
@@ -262,4 +266,156 @@ export const getProducts = async(req,res)=>{
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+
+export const getOrders = async (req, res) => {
+  try {
+    const orders = await OrderModel.find()
+      .populate('user', 'name email phone')
+      .populate({
+        path: 'items',
+        populate: [
+          { path: 'product', select: 'name images' },
+          { path: 'seller', select: 'name email phone' }
+        ]
+      })
+      .sort({ createdAt: -1 });
+    
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await OrderModel.findById(id)
+      .populate('user', 'name email phone')
+      .populate({
+        path: 'items',
+        populate: [
+          { path: 'product', select: 'name images brand' },
+          { path: 'seller', select: 'name email phone' }
+        ]
+      });
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+    
+    const order = await OrderModel.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    ).populate('user', 'name email');
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      order,
+      message: `Order status updated to ${status}`
+    });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updatePaymentStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { paymentStatus, refundAmount } = req.body;
+    
+    const validStatuses = ['pending', 'completed', 'failed', 'refunded', 'partially_refunded'];
+    if (!validStatuses.includes(paymentStatus)) {
+      return res.status(400).json({ message: "Invalid payment status" });
+    }
+    
+    const updateData = { paymentStatus };
+    if (refundAmount !== undefined) {
+      updateData.refundAmount = refundAmount;
+    }
+    
+    const order = await OrderModel.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    );
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      order,
+      message: `Payment status updated to ${paymentStatus}`
+    });
+  } catch (error) {
+    console.error('Error updating payment status:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getOrderStatistics = async (req, res) => {
+  try {
+    const totalOrders = await OrderModel.countDocuments();
+    const pendingOrders = await OrderModel.countDocuments({ status: 'pending' });
+    const processingOrders = await OrderModel.countDocuments({ status: 'processing' });
+    const deliveredOrders = await OrderModel.countDocuments({ status: 'delivered' });
+    const cancelledOrders = await OrderModel.countDocuments({ status: 'cancelled' });
+    
+    const totalRevenue = await OrderModel.aggregate([
+      { $match: { paymentStatus: 'completed' } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    
+    const recentOrders = await OrderModel.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .populate('user', 'name')
+      .select('orderId total status createdAt');
+    
+    const stats = {
+      totalOrders,
+      pendingOrders,
+      processingOrders,
+      deliveredOrders,
+      cancelledOrders,
+      totalRevenue: totalRevenue[0]?.total || 0,
+      recentOrders
+    };
+    
+    res.status(200).json(stats);
+  } catch (error) {
+    console.error('Error fetching order statistics:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff

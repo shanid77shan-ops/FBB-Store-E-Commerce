@@ -4,14 +4,21 @@ import OrderModel from "../Model/OrderModel.js";
 import mongoose from "mongoose";
 import crypto from "crypto";
 
+<<<<<<< HEAD
 // Helper function to get user - supports both auth token and cookie-based
 const getUser = async (req) => {
   // First try to get user from auth token (for logged-in users)
+=======
+const getUser = async (req) => {
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
   if (req.user && req.user._id) {
     return await UserModel.findById(req.user._id);
   }
   
+<<<<<<< HEAD
   // If no auth token, try cookies (for guest users)
+=======
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
   const { deviceId, sessionToken } = req.cookies || {};
   
   if (deviceId || sessionToken) {
@@ -219,16 +226,36 @@ export const removeFromCart = async (req, res) => {
     const { cartItemId } = req.params;
 
     const user = await getUser(req);
+<<<<<<< HEAD
     
     const cartItem = user.cart.id(cartItemId);
     if (!cartItem) {
+=======
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const cartItemExists = user.cart.some(
+      item => item.product.toString() === cartItemId
+    );
+
+    if (!cartItemExists) {
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       return res.status(404).json({
         success: false,
         message: "Cart item not found"
       });
     }
 
+<<<<<<< HEAD
     cartItem.remove();
+=======
+    user.cart.pull({ product: cartItemId });
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     await user.save();
 
     await user.populate({
@@ -251,7 +278,11 @@ export const removeFromCart = async (req, res) => {
     });
 
   } catch (error) {
+<<<<<<< HEAD
     console.error('Error removing from cart:', error);
+=======
+    console.error("Error removing from cart:", error);
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     res.status(500).json({
       success: false,
       message: "Failed to remove from cart",
@@ -260,12 +291,27 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 export const clearCart = async (req, res) => {
   try {
     const user = await getUser(req);
     user.cart = [];
     await user.save();
 
+=======
+
+
+
+export const clearCart = async (req, res) => {
+  try {
+    console.log("matyy")
+    const user = await getUser(req);
+    // console.log(user)
+    user.cart = [];
+    await user.save();
+
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     res.status(200).json({
       success: true,
       message: "Cart cleared",
@@ -828,7 +874,10 @@ export const createOrder = async (req, res) => {
       await product.save({ session });
     }
 
+<<<<<<< HEAD
     console.log(insufficientStockItems,"itmesss")
+=======
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (insufficientStockItems.length > 0) {
       await session.abortTransaction();
       session.endSession();

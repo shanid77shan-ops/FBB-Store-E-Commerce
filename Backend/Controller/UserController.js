@@ -176,9 +176,7 @@ export const getCategory = async(req,res)=>{
 export const getSubCategories = async(req,res)=>{
     try {
 
-      console.log("first")
         const { id } = req.params;
-        console.log(id)
         const cacheKey = `subcategories:${id}`;
         const cachedData = getFromCache(cacheKey);
         if (cachedData) {
@@ -238,7 +236,6 @@ export const getDetails = async(req,res)=>{
             .populate('seller', 'name image address INR DXB email')
             .lean();
 
-            console.log(product.seller)
         if (!product) {
             return res.status(404).json({ 
                 success: false,
@@ -266,7 +263,6 @@ export const getDetails = async(req,res)=>{
 export const getSubCategory = async (req, res) => {
     try {
 
-      console.log("jjeje")
         const sellerId = req.params.id;
         const categoryId = req.params.category;
         
@@ -325,7 +321,6 @@ export const getSubCategory = async (req, res) => {
             }
         ]);
 
-        console.log(subcategories)
         const response = {
             success: true,
             subcategories: subcategories || []

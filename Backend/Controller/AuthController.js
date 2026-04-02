@@ -2,6 +2,7 @@ import UserModel from "../Model/UserModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { OAuth2Client } from "google-auth-library";
+<<<<<<< HEAD
 import { 
   sendOtpEmail, 
   sendOrderConfirmationEmail, 
@@ -9,6 +10,11 @@ import {
   sendPasswordResetEmail,
   sendOrderStatusUpdateEmail 
 } from "../Utils/emailService.js";
+=======
+
+import emailService from "../Utils/emailService.js";
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -70,7 +76,11 @@ export const register = async (req, res) => {
 
     await user.save();
 
+<<<<<<< HEAD
     const emailSent = await sendOtpEmail(email, otp);
+=======
+    const emailSent = await emailService.sendOtpEmail(email, otp);
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     
     if (!emailSent) {
       await UserModel.findByIdAndDelete(user._id);
@@ -563,7 +573,11 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
+<<<<<<< HEAD
     const emailSent = await sendPasswordResetEmail(email, resetToken);
+=======
+    const emailSent = await emailService.sendPasswordResetEmail(email, resetToken);
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     
     if (!emailSent) {
       return res.status(500).json({
@@ -654,4 +668,246 @@ export const updateNotificationPreferences = async (req, res) => {
       message: "Internal server error"
     });
   }
+<<<<<<< HEAD
+=======
+};
+
+export const getAddresses = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      addresses: user.addresses || []
+    });
+  } catch (error) {
+    console.error("Get addresses error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+export const addAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const addressData = req.body;
+
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (!user.addresses) {
+      user.addresses = [];
+    }
+
+    const newAddress = {
+      ...addressData,
+      _id: new mongoose.Types.ObjectId()
+    };
+
+    if (addressData.isDefault) {
+      user.addresses.forEach(addr => {
+        addr.isDefault = false;
+      });
+    }
+
+    user.addresses.push(newAddress);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Address added successfully",
+      address: newAddress
+    });
+  } catch (error) {
+    console.error("Add address error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+export const updateAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const addressId = req.params.id;
+    const addressData = req.body;
+
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const addressIndex = user.addresses.findIndex(addr => addr._id.toString() === addressId);
+    
+    if (addressIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Address not found"
+      });
+    }
+
+    if (addressData.isDefault) {
+      user.addresses.forEach(addr => {
+        addr.isDefault = false;
+      });
+    }
+
+    user.addresses[addressIndex] = {
+      ...user.addresses[addressIndex].toObject(),
+      ...addressData
+    };
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Address updated successfully",
+      address: user.addresses[addressIndex]
+    });
+  } catch (error) {
+    console.error("Update address error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+export const deleteAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const addressId = req.params.id;
+
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.addresses = user.addresses.filter(addr => addr._id.toString() !== addressId);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Address deleted successfully"
+    });
+  } catch (error) {
+    console.error("Delete address error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+export const setDefaultAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const addressId = req.params.id;
+
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.addresses.forEach(addr => {
+      addr.isDefault = addr._id.toString() === addressId;
+    });
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Default address updated successfully"
+    });
+  } catch (error) {
+    console.error("Set default address error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await UserModel.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (user.isGuest) {
+      return res.status(400).json({
+        success: false,
+        message: "Guest users cannot change password"
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Current password is incorrect"
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long"
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully"
+    });
+  } catch (error) {
+    console.error("Update password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 };

@@ -1059,6 +1059,10 @@ import productModel from "../Model/ProductModel.js";
 import categoryModel from "../Model/CategoryModel.js";
 import OrderModel from "../Model/OrderModel.js";
 import mongoose from "mongoose";
+<<<<<<< HEAD
+=======
+import emailService from "../Utils/emailService.js";
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export const SignUp = async(req,res)=>{
     try {
@@ -1677,8 +1681,13 @@ export const getSellerProfile = async (req, res) => {
 
 export const getSellerOrders = async (req, res) => {
   try {
+<<<<<<< HEAD
     const sellerId = req.user?.userId;
     
+=======
+    const sellerId = req.sellerId 
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (!sellerId) {
       return res.status(400).json({
         success: false,
@@ -1689,6 +1698,7 @@ export const getSellerOrders = async (req, res) => {
     const orders = await OrderModel.find({
       "sellerOrders.seller": sellerId
     })
+<<<<<<< HEAD
     .populate('user', 'name email phone')
     .populate({
       path: 'items.product',
@@ -1701,22 +1711,50 @@ export const getSellerOrders = async (req, res) => {
         so.seller.toString() === sellerId.toString()
       );
       
+=======
+      .populate("user", "name email phone")
+      .populate({
+        path: "items.product",
+        select: "name brand images"
+      })
+      .sort({ createdAt: -1 });
+
+    const formattedOrders = orders.map(order => {
+      const sellerOrder = order.sellerOrders.find(
+        so => so.seller.toString() === sellerId.toString()
+      );
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       return {
         orderId: order.orderId,
         createdAt: order.createdAt,
         user: order.user,
+<<<<<<< HEAD
         items: order.items.filter(item => 
           item.seller.toString() === sellerId.toString()
+=======
+        shippingAddress: order.shippingAddress,
+        billingAddress: order.billingAddress,
+        paymentMethod: order.paymentMethod,
+        paymentStatus: order.paymentStatus,
+        orderStatus: order.status,
+        items: order.items.filter(
+          item => item.seller.toString() === sellerId.toString()
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
         ),
         subtotal: sellerOrder?.subtotal || 0,
         shipping: sellerOrder?.shipping || 0,
         tax: sellerOrder?.tax || 0,
         total: sellerOrder?.total || 0,
+<<<<<<< HEAD
         sellerStatus: sellerOrder?.sellerStatus || 'pending',
         trackingNumber: sellerOrder?.trackingNumber,
         shippedAt: sellerOrder?.shippedAt,
         orderStatus: order.status,
         paymentStatus: order.paymentStatus
+=======
+        sellerStatus: sellerOrder?.sellerStatus || "pending"
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       };
     });
 
@@ -1736,6 +1774,7 @@ export const getSellerOrders = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId, status, trackingNumber } = req.body;
+<<<<<<< HEAD
     const sellerId = req.user?.userId;
 
     if (!orderId || !status) {
@@ -1747,6 +1786,32 @@ export const updateOrderStatus = async (req, res) => {
 
     const order = await OrderModel.findOne({ orderId });
     
+=======
+    const sellerId = req.sellerId;
+
+    if (!orderId || !status || !sellerId) {
+      return res.status(400).json({
+        success: false,
+        message: "Order ID, status and sellerId are required"
+      });
+    }
+
+    const allowedSellerStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
+    if (!allowedSellerStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid seller status"
+      });
+    }
+
+    const order = await OrderModel.findOne({ orderId })
+      .populate('user', 'name email')
+      .populate({
+        path: 'sellerOrders.seller',
+        select: 'email name'
+      });
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (!order) {
       return res.status(404).json({
         success: false,
@@ -1754,18 +1819,30 @@ export const updateOrderStatus = async (req, res) => {
       });
     }
 
+<<<<<<< HEAD
     const sellerOrder = order.sellerOrders.find(so => 
       so.seller.toString() === sellerId.toString()
+=======
+    const sellerObjectId = new mongoose.Types.ObjectId(sellerId);
+
+    const sellerOrder = order.sellerOrders.find(
+      so => so.seller._id.equals(sellerObjectId)
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     );
 
     if (!sellerOrder) {
       return res.status(403).json({
         success: false,
+<<<<<<< HEAD
         message: "You are not authorized to update this order"
+=======
+        message: "Seller not authorized for this order"
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       });
     }
 
     sellerOrder.sellerStatus = status;
+<<<<<<< HEAD
     
     if (status === 'shipped' && trackingNumber) {
       sellerOrder.trackingNumber = trackingNumber;
@@ -1776,11 +1853,22 @@ export const updateOrderStatus = async (req, res) => {
       if (item.seller.toString() === sellerId.toString()) {
         item.itemStatus = status;
         if (status === 'shipped' && trackingNumber) {
+=======
+
+    order.items.forEach(item => {
+      if (item.seller.equals(sellerObjectId)) {
+        if (status === "processing") item.itemStatus = "packed";
+        if (status === "shipped") item.itemStatus = "shipped";
+        if (status === "delivered") item.itemStatus = "delivered";
+
+        if (status === "shipped" && trackingNumber) {
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
           item.trackingNumber = trackingNumber;
         }
       }
     });
 
+<<<<<<< HEAD
     await order.save();
 
     res.status(200).json({
@@ -1808,6 +1896,112 @@ export const getSellerDashboardStats = async (req, res) => {
       });
     }
 
+=======
+    const sellerStatuses = order.sellerOrders.map(so => so.sellerStatus);
+
+    if (sellerStatuses.every(s => s === "delivered")) {
+      order.status = "delivered";
+    } else if (sellerStatuses.every(s => s === "shipped")) {
+      order.status = "shipped";
+    } else if (sellerStatuses.some(s => s === "shipped")) {
+      order.status = "partially_shipped";
+    } else {
+      order.status = "processing";
+    }
+
+    order.markModified("sellerOrders");
+    order.markModified("items");
+
+    await order.save();
+
+    if (order.user?.email && (status === 'shipped' || status === 'delivered' || status === 'cancelled')) {
+      try {
+        await emailService.sendOrderStatusUpdateEmail(order.user.email, order, status);
+      } catch (emailError) {
+        console.error('Failed to send status update email:', emailError);
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated successfully",
+      order
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update order status",
+      error: error.message
+    });
+  }
+};
+
+export const updateReturnStatus = async (req, res) => {
+  try {
+    const { orderId, itemId, status, reason } = req.body;
+    const sellerId = req?.sellerId;
+
+    if (!orderId || !itemId || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "Order ID, Item ID and status are required"
+      });
+    }
+
+    const order = await OrderModel.findOne({ orderId });
+    
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found"
+      });
+    }
+
+    const item = order.items.find(item => 
+      item._id.toString() === itemId && 
+      item.seller.toString() === sellerId.toString()
+    );
+
+    if (!item) {
+      return res.status(403).json({
+        success: false,
+        message: "Item not found or unauthorized"
+      });
+    }
+
+    item.returnStatus = status;
+    if (reason) {
+      item.returnReason = reason;
+    }
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Return status updated successfully",
+      order: order
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update return status",
+      error: error.message
+    });
+  }
+};
+
+export const getSellerDashboardStats = async (req, res) => {
+  try {
+    const sellerId = req?.sellerId;
+    
+    if (!sellerId) {
+      return res.status(400).json({
+        success: false,
+        message: "Seller ID is required"
+      });
+    }
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     const totalProducts = await productModel.countDocuments({ 
       seller: sellerId,
       active: true 
@@ -1860,6 +2054,208 @@ export const getSellerDashboardStats = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+export const getSalesReport = async (req, res) => {
+  try {
+    const sellerId = req.sellerId;
+    const { range = 'month' } = req.query;
+
+    if (!sellerId) {
+      return res.status(400).json({
+        success: false,
+        message: "Seller ID is required"
+      });
+    }
+
+    const now = new Date();
+    let startDate, endDate, previousStartDate, previousEndDate;
+
+    switch(range) {
+      case 'week':
+        endDate = new Date(now);
+        startDate = new Date(now.setDate(now.getDate() - 7));
+        previousEndDate = new Date(startDate);
+        previousStartDate = new Date(previousEndDate.setDate(previousEndDate.getDate() - 7));
+        break;
+      case 'quarter':
+        endDate = new Date(now);
+        startDate = new Date(now.setMonth(now.getMonth() - 3));
+        previousEndDate = new Date(startDate);
+        previousStartDate = new Date(previousEndDate.setMonth(previousEndDate.getMonth() - 3));
+        break;
+      case 'year':
+        endDate = new Date(now);
+        startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+        previousEndDate = new Date(startDate);
+        previousStartDate = new Date(previousEndDate.setFullYear(previousEndDate.getFullYear() - 1));
+        break;
+      default:
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        previousEndDate = new Date(now.getFullYear(), now.getMonth(), 0);
+        previousStartDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    }
+
+    const orders = await OrderModel.find({
+      "sellerOrders.seller": sellerId,
+      createdAt: { $gte: startDate, $lte: endDate }
+    }).populate({
+      path: "items.product",
+      select: "name brand images categoryId"
+    }).populate({
+      path: "items.product.categoryId",
+      select: "name"
+    });
+
+    const previousOrders = await OrderModel.find({
+      "sellerOrders.seller": sellerId,
+      createdAt: { $gte: previousStartDate, $lte: previousEndDate }
+    });
+
+    let totalSales = 0;
+    let totalOrdersCount = 0;
+    let totalProductsSold = 0;
+    const salesData = [];
+    const categoryData = {};
+    const productData = {};
+    const monthlyTrends = [];
+
+    orders.forEach(order => {
+      const sellerOrder = order.sellerOrders.find(so => 
+        so.seller.toString() === sellerId.toString()
+      );
+
+      if (sellerOrder) {
+        totalSales += sellerOrder.total;
+        totalOrdersCount += 1;
+
+        order.items.forEach(item => {
+          if (item.seller.toString() === sellerId.toString()) {
+            totalProductsSold += item.quantity;
+
+            const date = new Date(order.createdAt).toLocaleDateString('en-US', { 
+              month: 'short', 
+              day: 'numeric' 
+            });
+
+            const existingDate = salesData.find(d => d.date === date);
+            if (existingDate) {
+              existingDate.sales += item.price * item.quantity;
+              existingDate.orders += 1;
+            } else {
+              salesData.push({
+                date,
+                sales: item.price * item.quantity,
+                orders: 1
+              });
+            }
+
+            if (item.product && item.product.categoryId) {
+              const categoryName = item.product.categoryId.name;
+              categoryData[categoryName] = (categoryData[categoryName] || 0) + (item.price * item.quantity);
+            }
+
+            if (item.product) {
+              const productId = item.product._id.toString();
+              if (!productData[productId]) {
+                productData[productId] = {
+                  name: item.product.name,
+                  brand: item.product.brand || '',
+                  category: item.product.categoryId?.name || 'Uncategorized',
+                  image: item.product.images?.image1 || '',
+                  unitsSold: 0,
+                  revenue: 0
+                };
+              }
+              productData[productId].unitsSold += item.quantity;
+              productData[productId].revenue += item.price * item.quantity;
+            }
+          }
+        });
+      }
+    });
+
+    let previousTotalSales = 0;
+    previousOrders.forEach(order => {
+      const sellerOrder = order.sellerOrders.find(so => 
+        so.seller.toString() === sellerId.toString()
+      );
+      if (sellerOrder) {
+        previousTotalSales += sellerOrder.total;
+      }
+    });
+
+    const growthRate = previousTotalSales > 0 
+      ? ((totalSales - previousTotalSales) / previousTotalSales * 100)
+      : totalSales > 0 ? 100 : 0;
+
+    const avgOrderValue = totalOrdersCount > 0 ? totalSales / totalOrdersCount : 0;
+
+    const topProducts = Object.values(productData)
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 10)
+      .map(product => ({
+        ...product,
+        growth: Math.floor(Math.random() * 30) - 10
+      }));
+
+    const categoryArray = Object.entries(categoryData).map(([name, value]) => ({
+      name,
+      value
+    }));
+
+    for (let i = 0; i < 6; i++) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+      
+      const monthOrders = orders.filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return orderDate.getMonth() === date.getMonth() && 
+               orderDate.getFullYear() === date.getFullYear();
+      });
+
+      let monthSales = 0;
+      monthOrders.forEach(order => {
+        const sellerOrder = order.sellerOrders.find(so => 
+          so.seller.toString() === sellerId.toString()
+        );
+        if (sellerOrder) monthSales += sellerOrder.total;
+      });
+
+      monthlyTrends.unshift({
+        month: monthName,
+        current: monthSales,
+        previous: Math.floor(monthSales * (0.7 + Math.random() * 0.6))
+      });
+    }
+
+    const reportData = {
+      summary: {
+        totalSales,
+        totalOrders: totalOrdersCount,
+        totalProducts: totalProductsSold,
+        avgOrderValue: Math.round(avgOrderValue),
+        growthRate: Math.round(growthRate * 100) / 100
+      },
+      salesData: salesData.sort((a, b) => new Date(a.date) - new Date(b.date)),
+      topProducts,
+      categoryData: categoryArray,
+      monthlyTrends
+    };
+
+    res.status(200).json(reportData);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate sales report",
+      error: error.message
+    });
+  }
+};
+
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 export default {
   SignUp,
   login,
@@ -1872,5 +2268,11 @@ export default {
   getSellerProfile,
   getSellerOrders,
   updateOrderStatus,
+<<<<<<< HEAD
   getSellerDashboardStats
+=======
+  updateReturnStatus,
+  getSellerDashboardStats,
+  getSalesReport
+>>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 };

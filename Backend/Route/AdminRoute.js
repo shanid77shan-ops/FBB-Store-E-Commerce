@@ -1,9 +1,10 @@
 import express from "express";
-import { addCategory, getCategory, addSubcategory, getSubCategory, updateTrending, SignUp, login, editCategory, getSellers, updateStatus, getSellerProduct, sellerByid, getProducts, editSubcategory } from "../Controller/AdminController.js";
+import { addCategory, getCategory, addSubcategory, getSubCategory, updateTrending, SignUp, login, editCategory, getSellers, updateStatus, getSellerProduct, sellerByid, getProducts, editSubcategory, getOrderStatistics, updatePaymentStatus, getOrderById, getOrders } from "../Controller/AdminController.js";
 import multer from "multer";
 import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
 import dotenv from 'dotenv';
+import { updateOrderStatus } from "../Controller/SellerController.js";
 
 dotenv.config();
 
@@ -66,5 +67,11 @@ adminRouter.put("/update-status/:id",updateStatus)
 adminRouter.get("/get-products/:id",getSellerProduct)
 adminRouter.get("/get-seller/:id",sellerByid)
 adminRouter.get("/get-products",getProducts)
+// Add these routes to adminRouter
+adminRouter.get("/orders", getOrders);
+adminRouter.get("/orders/:id", getOrderById);
+adminRouter.put("/orders/:id/status", updateOrderStatus);
+adminRouter.put("/orders/:id/payment-status", updatePaymentStatus);
+adminRouter.get("/orders/statistics", getOrderStatistics);
 
 export default adminRouter;
