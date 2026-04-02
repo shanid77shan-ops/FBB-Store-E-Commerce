@@ -1,24 +1,22 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const databaseConnection = async () => {
-  const MONGO = process.env.MONGO_URI;
-  if (!MONGO) {
-    console.error('MONGO_URI is not set');
-    process.exit(1);
-  }
-  try {
-    await mongoose.connect(MONGO, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  }
+    try {
+        // We removed the old useNewUrlParser and useUnifiedTopology options
+        // because they are no longer needed in newer Node versions.
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("✅ MongoDB Connected Successfully");
+    } catch (error) {
+        console.error("❌ MongoDB Connection Error:");
+        console.error(error.message);
+        
+        // If it's a DNS/ISP issue, this helps identify it
+        if (error.message.includes('ECONNREFUSED')) {
+            console.log("👉 Tip: Your ISP might be blocking MongoDB. Try the long-form MONGO_URI in your .env file.");
+        }
+        
+        process.exit(1); // Stop the server if DB fails
+    }
 };
 
 export default databaseConnection;

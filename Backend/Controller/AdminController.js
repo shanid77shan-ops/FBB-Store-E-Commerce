@@ -5,6 +5,7 @@ import AdminModel from "../Model/AdminModel.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import SellerModel from "../Model/SellerModel.js";
+
 export const addCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -39,7 +40,6 @@ export const getCategory = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const addSubcategory = async(req,res)=>{
   try {
@@ -77,18 +77,6 @@ export const getSubCategory = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const updateTrending = async (req, res) => {
   try {
     const id = req.params.id;
@@ -109,11 +97,8 @@ export const updateTrending = async (req, res) => {
   }
 };
 
-
-
 export const SignUp = async(req,res)=>{
   try {
-
     const {email,phone,password} = req.body
     const existing = await AdminModel.findOne({email})
 
@@ -131,7 +116,6 @@ export const SignUp = async(req,res)=>{
     })
 
    await admin.save()
-
 
    const token = jwt.sign({ userId: admin._id }, process.env.JWT_SECRET, {
     expiresIn: '7d',
@@ -159,7 +143,6 @@ export const login = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare password
     const isMatch = await bcrypt.compare(password,admin.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" });
@@ -185,31 +168,24 @@ export const login = async (req, res) => {
   }
 };
 
-
-
 export const editCategory = async(req,res)=>{
   try {
     const image = req.file?.location;
    const {name,categoryId} = req.body
 
-   console.log(image,name,categoryId,"this be the datas")
    const response = await categoryModel.updateOne(
     {_id:categoryId},
     {name:name,image:image}
    )
 
-
     res.status(200).json(response)
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
-
 export const editSubcategory = async(req,res)=>{
   try {
-
-    console.log("mayy hereeee")
     const image = req.file?.location
     const {name,categoryId} = req.body
     const id = req.params.id
@@ -226,16 +202,14 @@ export const editSubcategory = async(req,res)=>{
 
 export const getSellers = async(req,res)=>{
   try {
-    
     const sellers = await SellerModel.find()
     if(sellers){
       res.status(200).json(sellers)
     }
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-
 
 export const updateStatus = async(req,res)=>{
   try {
@@ -248,32 +222,27 @@ export const updateStatus = async(req,res)=>{
       {status:!status}
     )
 
-
     res.json({
       success: true,
       seller: update
-    });  } catch (error) {
-    
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-
 
 export const getSellerProduct = async(req,res)=>{
   try {
-    console.log("first")
     const id = req.params.id
-   console.log(id)
-   const products = await productModel
-   .find({ seller: id }).populate('categoryId', 'name').populate('subCategoryId','name').populate("seller","name")
-   .sort({ createdAt: -1 });
-   
-    console.log(products)
+    const products = await productModel
+    .find({ seller: id }).populate('categoryId', 'name').populate('subCategoryId','name').populate("seller","name")
+    .sort({ createdAt: -1 });
+    
     res.status(200).json(products)
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-
 
 export const sellerByid = async(req,res)=>{
   try {
@@ -282,22 +251,15 @@ export const sellerByid = async(req,res)=>{
 
     res.status(200).json(seller)  
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-
 
 export const getProducts = async(req,res)=>{
   try {
     const products = await productModel.find().populate('categoryId', 'name').populate('subCategoryId','name').populate("seller","name")
-    console.log(products)
     res.status(200).json(products)
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
-
-
-
-
-// index

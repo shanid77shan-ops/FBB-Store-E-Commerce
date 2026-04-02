@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Search, ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { baseurl } from '../../Constant/Base';
@@ -26,49 +26,40 @@ interface Product {
   trending: boolean;
 }
 
-const SellerProducts =() => {
+const SellerProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<string>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [seller,setSeller] = useState("")
-
+  const [seller, setSeller] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-
-
-  const {id} = useParams()
+  const { id } = useParams();
   const api = axios.create({
     baseURL: baseurl,
   });
-
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-
-  const getSeller = async()=>{
+  const getSeller = async () => {
     try {
-        const response = await api.get(`/admin/get-seller/${id}`)
-        console.log(response)
-        setSeller(response.data.name)
+      const response = await api.get(`/admin/get-seller/${id}`);
+      setSeller(response.data.name);
     } catch (error) {
-        
+      console.error('Error fetching seller:', error);
     }
-}
+  };
 
   const getProducts = async () => {
     try {
-        console.log(id)
       const response = await api.get(`/admin/get-products/${id}`);
-      console.log(response.data)
       if (response.data && Array.isArray(response.data)) {
         setProducts(response.data);
       }
-
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -83,7 +74,7 @@ const SellerProducts =() => {
     }
   };
 
-  const filteredProducts = products.filter(product => 
+  const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.brand.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -131,7 +122,7 @@ const SellerProducts =() => {
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  
+
   const SortIndicator = ({ field }: { field: string }) => {
     if (sortField !== field) return null;
     return <span className="ml-1">{sortDirection === 'asc' ? '↑' : '↓'}</span>;
@@ -139,12 +130,12 @@ const SellerProducts =() => {
 
   useEffect(() => {
     getProducts();
-    getSeller()
+    getSeller();
   }, []);
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-             <div className={`md:hidden fixed top-0 left-0 right-0 z-10 bg-white p-4 shadow-md flex justify-between items-center`}>
+      <div className="md:hidden fixed top-0 left-0 right-0 z-10 bg-white p-4 shadow-md flex justify-between items-center">
         <button
           onClick={toggleSidebar}
           className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -156,16 +147,12 @@ const SellerProducts =() => {
       </div>
 
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity md:hidden ${
-          sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity md:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={toggleSidebar}
       ></div>
 
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex justify-between items-center p-4 md:hidden">
           <h2 className="text-xl font-bold text-gray-800">Menu</h2>
@@ -178,17 +165,17 @@ const SellerProducts =() => {
         </div>
         <Sidebar />
       </div>
-      
-      <main className="flex-1 p-8">
+
+      <main className="flex-1 p-8 pt-20 md:pt-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Welcome, <span className="text-blue-600">Admin</span></h1>
           <p className="text-gray-600 mt-2">Manage your products</p>
         </header>
-  
+
         <div className="bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="p-6 flex flex-col md:flex-row justify-between items-center border-b border-gray-100">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">Products By {seller}</h2>
-            
+
             <div className="relative flex-grow md:max-w-md">
               <input
                 type="text"
@@ -200,7 +187,7 @@ const SellerProducts =() => {
               <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
           </div>
-  
+
           <div className="overflow-x-auto p-6">
             <table className="w-full">
               <thead>
@@ -234,13 +221,12 @@ const SellerProducts =() => {
                       <td className="py-4 px-4 text-gray-800">{product.categoryId.name}</td>
                       <td className="py-4 px-4 text-gray-800">{product.subCategoryId.name}</td>
                       <td className="py-4 px-4 text-gray-800">₹{product.priceINR}</td>
-                      
                       <td className="py-4 px-4 text-gray-800">AED {product.priceAED}</td>
                       <td className="py-4 px-4">
                         <div className="flex space-x-2">
                           {product.images && Object.values(product.images).length > 0 && (
-                            <img 
-                              src={Object.values(product.images)[0]} 
+                            <img
+                              src={Object.values(product.images)[0]}
                               alt={`${product.name} 1`}
                               className="w-12 h-12 object-cover rounded"
                             />
@@ -262,7 +248,7 @@ const SellerProducts =() => {
               </tbody>
             </table>
           </div>
-          
+
           {sortedProducts.length > 0 && totalPages > 1 && (
             <div className="flex flex-col md:flex-row justify-between items-center px-6 py-4 border-t border-gray-100 gap-4">
               <div className="text-sm text-gray-600">
@@ -280,11 +266,10 @@ const SellerProducts =() => {
                   <button
                     key={number}
                     onClick={() => paginate(number)}
-                    className={`w-10 h-10 rounded-lg ${
-                      currentPage === number
-                        ? 'bg-blue-600 text-white'
-                        : 'border border-gray-200 hover:bg-gray-50'
-                    }`}
+                    className={`w-10 h-10 rounded-lg ${currentPage === number
+                      ? 'bg-blue-600 text-white'
+                      : 'border border-gray-200 hover:bg-gray-50'
+                      }`}
                   >
                     {number}
                   </button>

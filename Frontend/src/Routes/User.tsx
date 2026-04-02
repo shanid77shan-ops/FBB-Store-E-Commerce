@@ -9,6 +9,13 @@ import Subcategory from "../Components/User/SubCategory";
 import Types from "../Components/User/Types";
 import AboutPage from "../Components/Layouts/About";
 import SellerPages from "../Components/User/Sellers";
+import ContactPage from "../Components/Layouts/Contact";
+import CartPage from "../Components/User/Cart";
+import OrdersPage from "../Components/User/OrdersPage";
+import OrderSuccess from "../Components/User/OrderSuccess";
+import CheckoutPage from "../Components/User/ChekoutPage";
+import OrderDetails from "../Components/User/OrderDetails";
+import ProfilePage from "../Components/User/ProfilePage";
 
 const User: React.FC = () => {
     return (
@@ -25,6 +32,13 @@ const User: React.FC = () => {
           <Route path="/about" element={<AboutPage/>}/>
           <Route path="/seller-list" element={<SellerPages/>}/>
           <Route path="/seller-list/:id" element={<CategoryPages/>}/>
+          <Route path="/contact" element={<ContactPage/>}/>
+          <Route path="/cart" element={<CartPage/>}/>
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
+          {/* <Route path="/orders" element={<OrdersPage />} /> */}
+          {/* <Route path="/order/:orderId" element={<OrderDetails />} /> */}
+          <Route path="/profile" element={<ProfilePage />} />
        </Routes>
       </>
     );

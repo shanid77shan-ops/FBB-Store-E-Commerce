@@ -1,1 +1,34 @@
 @import "tailwindcss";
+
+
+.toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    appearance: none;
+    background: #374151;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .toggle:checked {
+    background: #ffffff;
+  }
+  
+  .toggle:before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s;
+  }
+  
+  .toggle:checked:before {
+    background: black;
+    left: 22px;
+  }

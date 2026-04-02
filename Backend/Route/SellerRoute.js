@@ -3,7 +3,20 @@ import multer from "multer";
 import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
 import dotenv from 'dotenv';
-import { SignUp, addProduct, deleteProduct, getProducts, login, resetPassword, updateProduct, updateProfile } from "../Controller/SellerController.js";
+import { 
+  SignUp, 
+  addProduct, 
+  deleteProduct, 
+  getProducts, 
+  login, 
+  resetPassword, 
+  updateProduct, 
+  updateProfile,
+  getSellerOrders,
+  updateOrderStatus,
+  getSellerDashboardStats,
+  getSellerProfile
+} from "../Controller/SellerController.js";
 
 dotenv.config();
 
@@ -29,7 +42,6 @@ const profileImageUpload = multer({
   }),
 });
 
-// Updated to handle both images and videos
 const mediaUpload = multer({
   storage: multerS3({
     s3: s3Client,
@@ -44,13 +56,6 @@ const mediaUpload = multer({
 
 const handleProductMedia = async (req, res, next) => {
   try {
-    // Parse existing media if provided
-    const existingImages = req.body.existingImages ? JSON.parse(req.body.existingImages) : {};
-    const existingVideos = req.body.existingVideos ? JSON.parse(req.body.existingVideos) : {};
-    
-    req.existingImages = existingImages;
-    req.existingVideos = existingVideos;
-    
     const mediaFields = [
       { name: 'image1', maxCount: 1 },
       { name: 'image2', maxCount: 1 },
@@ -62,32 +67,29 @@ const handleProductMedia = async (req, res, next) => {
     
     return mediaUpload.fields(mediaFields)(req, res, (err) => {
       if (err) {
-        console.error("Error uploading files:", err);
         return res.status(400).json({ error: `Error uploading files: ${err.message}` });
       }
       next();
     });
   } catch (error) {
-    console.error("Error in handleProductMedia:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
 SellerRouter.post("/register", SignUp);
 SellerRouter.post("/login", login);
-
-// Updated to use the handleProductMedia middleware
-SellerRouter.post("/add-product", handleProductMedia, addProduct);
-
-SellerRouter.get("/get-products/:id", getProducts);
-
-// Updated to use the handleProductMedia middleware
-SellerRouter.put("/edit-product/:id", handleProductMedia, updateProduct);
-
 SellerRouter.post('/reset-password/:userId', resetPassword);
 
+SellerRouter.get('/profile/:id', getSellerProfile);
 SellerRouter.put('/update-profile/:userId', profileImageUpload.single('profileImage'), updateProfile);
 
+SellerRouter.post("/add-product", handleProductMedia, addProduct);
+SellerRouter.get("/get-products/:id", getProducts);
+SellerRouter.put("/edit-product/:id", handleProductMedia, updateProduct);
 SellerRouter.delete("/delete-product/:id", deleteProduct);
+
+SellerRouter.get("/orders", getSellerOrders);
+SellerRouter.post("/orders/update-status", updateOrderStatus);
+SellerRouter.get("/dashboard/stats", getSellerDashboardStats);
 
 export default SellerRouter;
