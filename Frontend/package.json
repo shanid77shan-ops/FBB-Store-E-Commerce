@@ -27,11 +27,8 @@
     "react-simple-typewriter": "^5.0.1",
     "react-toastify": "^11.0.3",
     "react-zoom-pan-pinch": "^3.7.0",
-<<<<<<< HEAD
     "recharts": "^3.8.1",
-=======
-    "recharts": "^3.6.0",
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
+     
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.0.1",
     "typewriter-effect": "^2.21.0"
