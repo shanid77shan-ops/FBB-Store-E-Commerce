@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, Smartphone } from 'lucide-react';
-import axios from 'axios';
-import { baseurl } from '../../Constant/Base';
 
 const AdminLogin: React.FC = () => {
-  const [emailOrPhone, setEmailOrPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  const api = axios.create({ baseURL: baseurl });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,17 +12,8 @@ const AdminLogin: React.FC = () => {
     setError('');
 
     try {
-      const response = await api.post('/admin/login', {
-        emailOrPhone,
-        password
-      });
-
-      if (response.data.token) {
-        localStorage.setItem('adminToken', response.data.token);
-        navigate('/admin/dashboard');
-      }
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+      localStorage.setItem('adminTestLogin', 'true');
+      navigate('/');
     } finally {
       setLoading(false);
     }
@@ -61,58 +44,9 @@ const AdminLogin: React.FC = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email or Phone Number
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  {emailOrPhone.includes('@') ? (
-                    <Mail size={20} className="text-gray-400" />
-                  ) : (
-                    <Smartphone size={20} className="text-gray-400" />
-                  )}
-                </div>
-                <input
-                  type="text"
-                  value={emailOrPhone}
-                  onChange={(e) => setEmailOrPhone(e.target.value)}
-                  className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="admin@example.com or +91XXXXXXXXXX"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock size={20} className="text-gray-400" />
-                </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter your password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff size={20} className="text-gray-400" />
-                  ) : (
-                    <Eye size={20} className="text-gray-400" />
-                  )}
-                </button>
-              </div>
-            </div>
+            <p className="text-sm text-gray-600 bg-blue-50 border border-blue-100 rounded-lg p-3">
+              Test mode is enabled. Click Sign In to continue without username or password.
+            </p>
 
             <div className="flex items-center justify-between">
               <label className="flex items-center">
@@ -126,7 +60,7 @@ const AdminLogin: React.FC = () => {
                 to="/admin/forgot-password"
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
-                Forgot password?
+                Need admin help?
               </Link>
             </div>
 
