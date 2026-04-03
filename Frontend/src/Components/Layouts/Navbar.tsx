@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, ShoppingCart, Heart, User, LogOut, Package } from 'lucide-react';
-<<<<<<< HEAD
 import fbb from "./Img/fbb.png";
-=======
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
@@ -83,7 +80,7 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -97,12 +94,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   const api = axios.create({
     baseURL: baseurl,
   });
-<<<<<<< HEAD
-=======
-
-  let first = loading
-  console.log(first)
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
   const navItems: NavItem[] = [
     { label: 'Home', href: '/' },
@@ -128,19 +119,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
     checkAuthStatus();
     fetchCartData();
     fetchWishlistData();
-<<<<<<< HEAD
-=======
-    
-    const handleAuthChange = () => {
-      checkAuthStatus();
-    };
-    
-    window.addEventListener('auth-change', handleAuthChange);
-    
-    return () => {
-      window.removeEventListener('auth-change', handleAuthChange);
-    };
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   }, []);
 
   useEffect(() => {
@@ -198,17 +176,9 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       const response = await api.get('/cart', {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
-=======
-  
-      const response = await api.get('/cart', {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
-  
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       if (response.data.success) {
         setCartItems(response.data.cart || []);
         setCartCount(response.data.cartCount || 0);
@@ -220,19 +190,11 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
       setLoading(false);
     }
   };
-<<<<<<< HEAD
-=======
-  
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
   const fetchWishlistData = async () => {
     try {
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       const response = await api.get('/cart/wishlist', {
-=======
-      const response = await api.get('/wishlist', {
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       if (response.data.success) {
@@ -278,11 +240,7 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   const removeFromCart = async (cartItemId: string) => {
     try {
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       await api.delete(`/cart/cart/remove/${cartItemId}`, {
-=======
-      await api.delete(`/cart/remove/${cartItemId}`, {
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       fetchCartData();
@@ -309,11 +267,7 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   const removeFromWishlist = async (productId: string) => {
     try {
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       await api.delete(`/cart/wishlist/remove/${productId}`, {
-=======
-      await api.delete(`/wishlist/remove/${productId}`, {
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       fetchWishlistData();
@@ -325,11 +279,7 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   const moveToCart = async (productId: string) => {
     try {
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       await api.post('/cart/wishlist/move-to-cart', { productId }, {
-=======
-      await api.post('/wishlist/move-to-cart', { productId }, {
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       fetchCartData();
@@ -357,10 +307,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
     setShowAuthModal(false);
     fetchCartData();
     fetchWishlistData();
-<<<<<<< HEAD
-=======
-    window.dispatchEvent(new Event('auth-change'));
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   };
 
   const handleOtpVerifySuccess = async () => {
@@ -368,18 +314,11 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
     setShowOtpModal(false);
     fetchCartData();
     fetchWishlistData();
-<<<<<<< HEAD
-=======
-    window.dispatchEvent(new Event('auth-change'));
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   };
 
   const handleLogout = async () => {
     try {
-<<<<<<< HEAD
       await api.post('/user/logout');
-=======
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       localStorage.removeItem('token');
       localStorage.removeItem('userData');
       setIsLogged(false);
@@ -390,10 +329,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
       setWishlistCount(0);
       setShowProfileDropdown(false);
       setIsOpen(false);
-<<<<<<< HEAD
-=======
-      window.dispatchEvent(new Event('auth-change'));
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
@@ -595,21 +530,13 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   return (
     <>
       <nav
-<<<<<<< HEAD
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 h-24 ${getBgColor()} border-b border-gray-800/50`}
-=======
-        className={`fixed top-0 left-0 w-full z-40 h-24 transition-colors duration-300 ease-out ${getBgColor()} border-b border-gray-800/50`}
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex items-center justify-between h-full">
             <div className="flex-shrink-0 flex items-center">
               <img 
-<<<<<<< HEAD
                 src={fbb} 
-=======
-                src="/fbb.png" 
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                 alt="FBB Luxury" 
                 className="h-20 w-auto object-contain cursor-pointer hover:opacity-90 transition-opacity duration-300"
                 onClick={() => navigate('/')}
@@ -836,7 +763,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
         }}
       />
 
-<<<<<<< HEAD
 <OtpModal
   show={showOtpModal}
   onClose={() => setShowOtpModal(false)}
@@ -844,15 +770,6 @@ const NavBar: React.FC<NavBarProps> = ({ isTransparent = false }) => {
   onVerifySuccess={handleOtpVerifySuccess}
   onLoginSuccess={handleLoginSuccess} 
 />
-=======
-      <OtpModal
-        show={showOtpModal}
-        onClose={() => setShowOtpModal(false)}
-        email={registeredEmail}
-        onVerifySuccess={handleOtpVerifySuccess}
-        onLoginSuccess={handleLoginSuccess} 
-      />
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
       <ForgotPasswordModal
         show={showForgotPasswordModal}

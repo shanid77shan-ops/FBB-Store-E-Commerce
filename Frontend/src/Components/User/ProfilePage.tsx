@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { User, MapPin, ShoppingBag, Heart, Settings, LogOut, Package, Clock, Truck, CheckCircle, Edit, Mail, Phone, CreditCard, Trash2, Plus, Minus, ArrowLeft, Shield, Lock, Printer, Download, ChevronLeft, X, AlertCircle } from 'lucide-react';
+import { User, MapPin, ShoppingBag, Heart, Settings, LogOut, Package, Clock, Truck, CheckCircle, Edit, Mail, Phone, CreditCard, Trash2, Plus, Minus, Lock, Printer, Download, ChevronLeft, X, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { baseurl } from '../../Constant/Base';
 import NavBar from '../Layouts/Navbar';
-=======
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { User, MapPin, ShoppingBag, Heart, Settings, LogOut, Package, Clock, Truck, CheckCircle, Edit, Mail, Phone, CreditCard, Trash2, Plus, Minus, Lock, Printer, Download, ChevronLeft, X, AlertCircle, Home, Building } from 'lucide-react';
-import axios from 'axios';
-import { baseurl } from '../../Constant/Base';
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 import Footer from '../Layouts/Footer';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
@@ -41,11 +33,7 @@ interface UserProfile {
   cartCount: number;
   wishlistCount: number;
   ordersCount: number;
-<<<<<<< HEAD
   joinDate: string;
-=======
-  createdAt: string;
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 }
 
 interface OrderItem {
@@ -151,57 +139,16 @@ interface CartItem {
   price: number;
 }
 
-<<<<<<< HEAD
-=======
-interface WishlistItem {
-  _id: string;
-  product: {
-    _id: string;
-    name: string;
-    brand: string;
-    priceINR: number;
-    images: {
-      image1: string;
-    };
-    stock: number;
-  };
-  addedAt: string;
-}
-
-interface Address {
-  _id?: string;
-  type: 'shipping' | 'billing';
-  name: string;
-  phone: string;
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  pincode: string;
-  isDefault: boolean;
-}
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 const ProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-<<<<<<< HEAD
-=======
-  const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
-  const [addresses, setAddresses] = useState<Address[]>([]);
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   const [loading, setLoading] = useState({
     overview: true,
     orders: true,
     cart: true,
-<<<<<<< HEAD
-=======
-    wishlist: true,
-    addresses: true,
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
     orderDetails: false
   });
   const [activeTab, setActiveTab] = useState('overview');
@@ -212,39 +159,10 @@ const ProfilePage = () => {
   const [tax] = useState(0);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showReturnModal, setShowReturnModal] = useState(false);
-<<<<<<< HEAD
   const [selectedItem, setSelectedItem] = useState<OrderItem | null>(null);
   const [cancelReason, setCancelReason] = useState('');
   const [returnReason, setReturnReason] = useState('');
   const [processingAction, setProcessingAction] = useState(false);
-=======
-  const [showAddressModal, setShowAddressModal] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<OrderItem | null>(null);
-  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const [cancelReason, setCancelReason] = useState('');
-  const [returnReason, setReturnReason] = useState('');
-  const [processingAction, setProcessingAction] = useState(false);
-  const [editingAddress, setEditingAddress] = useState(false);
-  const [addressForm, setAddressForm] = useState({
-    name: '',
-    phone: '',
-    street: '',
-    city: '',
-    state: '',
-    country: 'India',
-    pincode: '',
-    isDefault: false
-  });
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -258,7 +176,6 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-<<<<<<< HEAD
     if (activeTab === 'overview') {
       fetchProfileData();
       fetchRecentOrders();
@@ -268,26 +185,6 @@ const ProfilePage = () => {
       fetchCartData();
     }
   }, [activeTab]);
-=======
-    if (isLoggedIn) {
-      if (activeTab === 'overview') {
-        fetchProfileData();
-        fetchRecentOrders();
-      } else if (activeTab === 'orders') {
-        fetchAllOrders();
-      } else if (activeTab === 'cart') {
-        fetchCartData();
-      } else if (activeTab === 'wishlist') {
-        fetchWishlistData();
-      } else if (activeTab === 'addresses') {
-        fetchAddresses();
-      }
-    } else {
-      navigate('/');
-      toast.error('Please login to access profile');
-    }
-  }, [activeTab, isLoggedIn]);
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
 
   const fetchProfileData = async () => {
     try {
@@ -343,11 +240,7 @@ const ProfilePage = () => {
   const fetchCartData = async () => {
     try {
       setLoading(prev => ({ ...prev, cart: true }));
-<<<<<<< HEAD
       const response = await api.get('/cart',{
-=======
-      const response = await api.get('/cart', {
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       if (response.data.success) {
@@ -363,63 +256,15 @@ const ProfilePage = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
-  const fetchWishlistData = async () => {
-    try {
-      setLoading(prev => ({ ...prev, wishlist: true }));
-      const response = await api.get('/wishlist', {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
-      if (response.data.success) {
-        setWishlistItems(response.data.wishlist || []);
-      }
-    } catch (error) {
-      console.error('Error fetching wishlist:', error);
-      toast.error('Failed to load wishlist');
-      setWishlistItems([]);
-    } finally {
-      setLoading(prev => ({ ...prev, wishlist: false }));
-    }
-  };
-
-  const fetchAddresses = async () => {
-    try {
-      setLoading(prev => ({ ...prev, addresses: true }));
-      const response = await api.get('/profile/addresses', {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
-      if (response.data.success) {
-        setAddresses(response.data.addresses || []);
-      }
-    } catch (error) {
-      console.error('Error fetching addresses:', error);
-      setAddresses([]);
-    } finally {
-      setLoading(prev => ({ ...prev, addresses: false }));
-    }
-  };
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   const updateQuantity = async (cartItemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
     
     try {
       setUpdatingCart(cartItemId);
-<<<<<<< HEAD
       await api.put('/cart/cart/update', {
         cartItemId,
         quantity: newQuantity
       });
-=======
-      await api.put('/cart/update', {
-        cartItemId,
-        quantity: newQuantity
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       await fetchCartData();
     } catch (error: any) {
       console.error('Error updating quantity:', error);
@@ -435,13 +280,7 @@ const ProfilePage = () => {
 
   const removeItem = async (cartItemId: string) => {
     try {
-<<<<<<< HEAD
       await api.delete(`/cart/cart/remove/${cartItemId}`);
-=======
-      await api.delete(`/cart/remove/${cartItemId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       toast.success('Item removed from cart');
       await fetchCartData();
     } catch (error) {
@@ -450,46 +289,9 @@ const ProfilePage = () => {
     }
   };
 
-<<<<<<< HEAD
   const clearCart = async () => {
     try {
       await api.delete('/cart/cart/clear');
-=======
-  const removeFromWishlist = async (productId: string) => {
-    try {
-      await api.delete(`/wishlist/remove/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Item removed from wishlist');
-      await fetchWishlistData();
-    } catch (error) {
-      console.error('Error removing from wishlist:', error);
-      toast.error('Failed to remove item');
-    }
-  };
-
-  const moveToCart = async (productId: string) => {
-    try {
-      await api.post('/wishlist/move-to-cart', {
-        productId
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Item moved to cart');
-      await fetchWishlistData();
-      await fetchCartData();
-    } catch (error) {
-      console.error('Error moving to cart:', error);
-      toast.error('Failed to move item');
-    }
-  };
-
-  const clearCart = async () => {
-    try {
-      await api.delete('/cart/clear', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       toast.success('Cart cleared');
       await fetchCartData();
     } catch (error) {
@@ -498,121 +300,6 @@ const ProfilePage = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
-  const handleAddAddress = () => {
-    setSelectedAddress(null);
-    setAddressForm({
-      name: '',
-      phone: '',
-      street: '',
-      city: '',
-      state: '',
-      country: 'India',
-      pincode: '',
-      isDefault: addresses.length === 0
-    });
-    setEditingAddress(false);
-    setShowAddressModal(true);
-  };
-
-  const handleEditAddress = (address: Address) => {
-    setSelectedAddress(address);
-    setAddressForm({
-      name: address.name,
-      phone: address.phone,
-      street: address.street,
-      city: address.city,
-      state: address.state,
-      country: address.country,
-      pincode: address.pincode,
-      isDefault: address.isDefault
-    });
-    setEditingAddress(true);
-    setShowAddressModal(true);
-  };
-
-  const handleDeleteAddress = async (addressId: string) => {
-    if (window.confirm('Are you sure you want to delete this address?')) {
-      try {
-        await api.delete(`/profile/addresses/${addressId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        toast.success('Address deleted successfully');
-        await fetchAddresses();
-      } catch (error) {
-        console.error('Error deleting address:', error);
-        toast.error('Failed to delete address');
-      }
-    }
-  };
-
-  const handleSetDefaultAddress = async (addressId: string) => {
-    try {
-      await api.put(`/profile/addresses/${addressId}/default`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Default address updated');
-      await fetchAddresses();
-    } catch (error) {
-      console.error('Error setting default address:', error);
-      toast.error('Failed to update default address');
-    }
-  };
-
-  const saveAddress = async () => {
-    try {
-      if (editingAddress && selectedAddress?._id) {
-        await api.put(`/profile/addresses/${selectedAddress._id}`, addressForm, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        toast.success('Address updated successfully');
-      } else {
-        await api.post('/profile/addresses', addressForm, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        toast.success('Address added successfully');
-      }
-      setShowAddressModal(false);
-      await fetchAddresses();
-    } catch (error) {
-      console.error('Error saving address:', error);
-      toast.error('Failed to save address');
-    }
-  };
-
-  const updatePassword = async () => {
-    const errors = [];
-    if (passwordForm.newPassword.length < 6) {
-      errors.push('Password must be at least 6 characters long');
-    }
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      errors.push('Passwords do not match');
-    }
-    
-    if (errors.length > 0) {
-      setPasswordErrors(errors);
-      return;
-    }
-
-    try {
-      await api.put('/profile/password', {
-        currentPassword: passwordForm.currentPassword,
-        newPassword: passwordForm.newPassword
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      toast.success('Password updated successfully');
-      setShowPasswordModal(false);
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      setPasswordErrors([]);
-    } catch (error: any) {
-      console.error('Error updating password:', error);
-      toast.error(error.response?.data?.message || 'Failed to update password');
-    }
-  };
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   const handleCancelItem = (item: OrderItem) => {
     setSelectedItem(item);
     setCancelReason('');
@@ -636,11 +323,6 @@ const ProfilePage = () => {
       const response = await api.post(`/order/${selectedOrder?.orderId}/cancel-item`, {
         itemId: selectedItem._id,
         reason: cancelReason
-<<<<<<< HEAD
-=======
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       });
 
       if (response.data.success) {
@@ -678,11 +360,6 @@ const ProfilePage = () => {
       const response = await api.post(`/order/${selectedOrder?.orderId}/return`, {
         itemId: selectedItem._id,
         reason: returnReason
-<<<<<<< HEAD
-=======
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       });
 
       if (response.data.success) {
@@ -711,17 +388,8 @@ const ProfilePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-<<<<<<< HEAD
     navigate('/login');
     toast.success('Logged out successfully');
-=======
-    localStorage.removeItem('userData');
-    setIsLoggedIn(false);
-    navigate('/');
-    toast.success('Logged out successfully');
-    
-    window.dispatchEvent(new Event('auth-change'));
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
   };
 
   const getStatusIcon = (status: string) => {
@@ -778,36 +446,10 @@ const ProfilePage = () => {
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const grandTotal = cartTotal + shippingCost + tax;
 
-<<<<<<< HEAD
   if (loading.overview && activeTab === 'overview') {
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <NavBar />
-=======
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen flex flex-col bg-white">
-        <div className="flex-grow flex items-center justify-center mt-16">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Please Login</h1>
-            <p className="text-gray-600 mb-6">You need to be logged in to view your profile.</p>
-            <button
-              onClick={() => navigate('/')}
-              className="bg-amber-500 text-white hover:bg-amber-600 px-6 py-3 rounded-lg font-medium transition-colors"
-            >
-              Go to Home
-            </button>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (loading.overview && activeTab === 'overview') {
-    return (
-      <div className="min-h-screen flex flex-col bg-white">
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
         <div className="flex-grow flex items-center justify-center mt-16">
           <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -818,11 +460,8 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-<<<<<<< HEAD
       <NavBar />
       
-=======
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <main className="flex-grow pt-16">
         <div className="relative h-[250px] overflow-hidden bg-black">
           <motion.div
@@ -864,20 +503,7 @@ const ProfilePage = () => {
                   transition={{ duration: 0.5, delay: 0.4 }}
                   className="text-gray-300 text-sm md:text-base"
                 >
-<<<<<<< HEAD
                   Member since {profile?.joinDate || '2023'}
-=======
-          <span>
-            Member since{" "}
-            {profile?.createdAt
-              ? new Date(profile.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : ""}
-          </span>
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                 </motion.p>
               </div>
             </div>
@@ -992,20 +618,7 @@ const ProfilePage = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Member Since</span>
-<<<<<<< HEAD
                       <span className="font-bold text-gray-900">{profile?.joinDate || '2023'}</span>
-=======
-                      <span>
-  Member since{" "}
-  {profile?.createdAt
-    ? new Date(profile.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : ""}
-</span>
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                     </div>
                   </div>
                 </div>
@@ -1055,7 +668,6 @@ const ProfilePage = () => {
                       </div>
                     ) : (
                       <div className="space-y-4">
-<<<<<<< HEAD
                       {(orders || []).slice(0, 3).map((order) => (
                         <motion.div
                           key={order._id}
@@ -1096,48 +708,6 @@ const ProfilePage = () => {
                         </motion.div>
                       ))}
                     </div>
-=======
-                        {(orders || []).slice(0, 3).map((order) => (
-                          <motion.div
-                            key={order._id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors border border-gray-200"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <div className="flex items-center gap-3 mb-2">
-                                  {getStatusIcon(order.status)}
-                                  <span className="font-medium text-gray-900">Order #{order.orderId}</span>
-                                  <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(order.status)}`}>
-                                    {getStatusText(order.status)}
-                                  </span>
-                                </div>
-                                <div className="text-sm text-gray-600">
-                                  {new Date(order.createdAt).toLocaleDateString('en-IN', {
-                                    day: 'numeric',
-                                    month: 'short',
-                                    year: 'numeric'
-                                  })} • {(order.items || []).length} items
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-xl font-bold text-gray-900">₹{order.total}</div>
-                                <button
-                                  onClick={() => {
-                                    setSelectedOrder(order);
-                                    setActiveTab('order-details');
-                                  }}
-                                  className="text-sm text-amber-600 hover:text-amber-700 mt-2"
-                                >
-                                  View Details
-                                </button>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
                     )}
                   </div>
 
@@ -1481,271 +1051,6 @@ const ProfilePage = () => {
                 </motion.div>
               )}
 
-<<<<<<< HEAD
-=======
-              {activeTab === 'wishlist' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-8"
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Wishlist</h1>
-                      <p className="text-gray-600">Your saved favorite items</p>
-                    </div>
-                    <div className="text-gray-600">
-                      {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
-                    </div>
-                  </div>
-
-                  {loading.wishlist ? (
-                    <div className="flex items-center justify-center py-12">
-                      <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : wishlistItems.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Heart className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-                      <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Wishlist is Empty</h2>
-                      <p className="text-gray-600 mb-8">
-                        Save your favorite items here to purchase them later.
-                      </p>
-                      <button
-                        onClick={() => navigate('/shop')}
-                        className="bg-amber-500 text-white hover:bg-amber-600 px-6 py-3 rounded-lg font-medium transition-colors"
-                      >
-                        Browse Products
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {wishlistItems.map((item) => (
-                        <div key={item._id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                          <div className="p-4">
-                            <div className="relative h-48 mb-4">
-                              <img
-                                src={item.product.images.image1}
-                                alt={item.product.name}
-                                className="w-full h-full object-cover rounded-lg"
-                              />
-                              <button
-                                onClick={() => removeFromWishlist(item.product._id)}
-                                className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-50 hover:text-red-500 transition-colors"
-                              >
-                                <X className="h-4 w-4" />
-                              </button>
-                            </div>
-                            
-                            <h3 className="font-medium text-gray-900 mb-2 line-clamp-1">
-                              {item.product.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-3">{item.product.brand}</p>
-                            
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="text-lg font-bold text-gray-900">
-                                ₹{item.product.priceINR}
-                              </div>
-                              <div className={`text-sm font-medium ${
-                                item.product.stock > 0 ? 'text-green-600' : 'text-red-600'
-                              }`}>
-                                {item.product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                              </div>
-                            </div>
-
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => moveToCart(item.product._id)}
-                                disabled={item.product.stock === 0}
-                                className="flex-1 bg-amber-500 text-white hover:bg-amber-600 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                              >
-                                Add to Cart
-                              </button>
-                              <button
-                                onClick={() => navigate(`/product/${item.product._id}`)}
-                                className="flex-1 border border-gray-300 text-gray-700 hover:bg-gray-50 py-2 rounded-lg font-medium transition-colors"
-                              >
-                                View
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-
-              {activeTab === 'addresses' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-8"
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Addresses</h1>
-                      <p className="text-gray-600">Manage your shipping and billing addresses</p>
-                    </div>
-                    <button
-                      onClick={handleAddAddress}
-                      className="bg-amber-500 text-white hover:bg-amber-600 px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Add New Address
-                    </button>
-                  </div>
-
-                  {loading.addresses ? (
-                    <div className="flex items-center justify-center py-12">
-                      <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : addresses.length === 0 ? (
-                    <div className="text-center py-12">
-                      <MapPin className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-                      <h2 className="text-2xl font-bold text-gray-900 mb-4">No Addresses Saved</h2>
-                      <p className="text-gray-600 mb-8">
-                        Add your shipping and billing addresses for faster checkout.
-                      </p>
-                      <button
-                        onClick={handleAddAddress}
-                        className="bg-amber-500 text-white hover:bg-amber-600 px-6 py-3 rounded-lg font-medium transition-colors"
-                      >
-                        Add Your First Address
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {addresses.map((address) => (
-                        <div key={address._id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                              {address.type === 'shipping' ? (
-                                <Home className="h-5 w-5 text-amber-500" />
-                              ) : (
-                                <Building className="h-5 w-5 text-blue-500" />
-                              )}
-                              <div>
-                                <h3 className="font-bold text-gray-900 capitalize">{address.type} Address</h3>
-                                {address.isDefault && (
-                                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                                    Default
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleEditAddress(address)}
-                                className="text-gray-400 hover:text-amber-600 transition-colors"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </button>
-                              <button
-                                onClick={() => address._id && handleDeleteAddress(address._id)}
-                                className="text-gray-400 hover:text-red-500 transition-colors"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <p className="font-medium text-gray-900">{address.name}</p>
-                            <p className="text-gray-600">{address.street}</p>
-                            <p className="text-gray-600">
-                              {address.city}, {address.state}
-                            </p>
-                            <p className="text-gray-600">
-                              {address.country} - {address.pincode}
-                            </p>
-                            <p className="text-gray-600 mt-2">Phone: {address.phone}</p>
-                          </div>
-
-                          <div className="mt-6 pt-6 border-t border-gray-200 flex justify-end">
-                            {!address.isDefault && (
-                              <button
-                                onClick={() => address._id && handleSetDefaultAddress(address._id)}
-                                className="text-sm text-amber-600 hover:text-amber-700 font-medium"
-                              >
-                                Set as Default
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-
-              {activeTab === 'settings' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Account Settings</h2>
-                  
-                  <div className="space-y-8">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Notification Preferences</h3>
-                      <div className="space-y-4">
-                        <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <div>
-                            <span className="font-medium text-gray-900">Email Notifications</span>
-                            <p className="text-sm text-gray-600">Receive updates about your orders</p>
-                          </div>
-                          <input type="checkbox" className="toggle toggle-amber" defaultChecked />
-                        </label>
-                        <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <div>
-                            <span className="font-medium text-gray-900">Promotional Offers</span>
-                            <p className="text-sm text-gray-600">Get notified about sales and new arrivals</p>
-                          </div>
-                          <input type="checkbox" className="toggle toggle-amber" defaultChecked />
-                        </label>
-                        <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <div>
-                            <span className="font-medium text-gray-900">Order Updates</span>
-                            <p className="text-sm text-gray-600">Get real-time updates on your orders</p>
-                          </div>
-                          <input type="checkbox" className="toggle toggle-amber" />
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="pt-8 border-t border-gray-200">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900">Change Password</h3>
-                        <button
-                          onClick={() => setShowPasswordModal(true)}
-                          className="text-amber-600 hover:text-amber-700 font-medium"
-                        >
-                          Change Password
-                        </button>
-                      </div>
-                      <p className="text-gray-600 mb-4">
-                        For security reasons, we recommend changing your password regularly.
-                      </p>
-                    </div>
-
-                    <div className="pt-8 border-t border-gray-200">
-                      <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <p className="text-red-800 mb-3">Permanently delete your account and all associated data.</p>
-                        <button className="bg-red-600 text-white hover:bg-red-700 px-6 py-2 rounded-lg font-medium transition-colors">
-                          Delete Account
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
               {activeTab === 'order-details' && selectedOrder && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -1963,7 +1268,6 @@ const ProfilePage = () => {
                   </div>
                 </motion.div>
               )}
-<<<<<<< HEAD
 
               {activeTab === 'addresses' && (
                 <motion.div
@@ -2166,8 +1470,6 @@ const ProfilePage = () => {
                   </div>
                 </motion.div>
               )}
-=======
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
             </div>
           </div>
         </div>
@@ -2271,248 +1573,6 @@ const ProfilePage = () => {
         </div>
       )}
 
-<<<<<<< HEAD
-=======
-      {showAddressModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900">
-                {editingAddress ? 'Edit Address' : 'Add New Address'}
-              </h3>
-              <button
-                onClick={() => setShowAddressModal(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  value={addressForm.name}
-                  onChange={(e) => setAddressForm({ ...addressForm, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  placeholder="Enter full name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  value={addressForm.phone}
-                  onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  placeholder="Enter phone number"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Street Address *
-                </label>
-                <textarea
-                  value={addressForm.street}
-                  onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  rows={2}
-                  placeholder="Enter street address"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    City *
-                  </label>
-                  <input
-                    type="text"
-                    value={addressForm.city}
-                    onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                    placeholder="Enter city"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    State *
-                  </label>
-                  <input
-                    type="text"
-                    value={addressForm.state}
-                    onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                    placeholder="Enter state"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Country *
-                  </label>
-                  <input
-                    type="text"
-                    value={addressForm.country}
-                    onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                    placeholder="Enter country"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Pincode *
-                  </label>
-                  <input
-                    type="text"
-                    value={addressForm.pincode}
-                    onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                    placeholder="Enter pincode"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="isDefault"
-                  checked={addressForm.isDefault}
-                  onChange={(e) => setAddressForm({ ...addressForm, isDefault: e.target.checked })}
-                  className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
-                />
-                <label htmlFor="isDefault" className="text-sm text-gray-700">
-                  Set as default address
-                </label>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 mt-8">
-              <button
-                onClick={() => setShowAddressModal(false)}
-                className="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={saveAddress}
-                className="px-4 py-2 bg-amber-500 text-white hover:bg-amber-600 rounded-lg transition-colors"
-              >
-                {editingAddress ? 'Update Address' : 'Save Address'}
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {showPasswordModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl p-6 max-w-md w-full"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900">Change Password</h3>
-              <button
-                onClick={() => {
-                  setShowPasswordModal(false);
-                  setPasswordErrors([]);
-                  setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-                }}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {passwordErrors.length > 0 && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                {passwordErrors.map((error, index) => (
-                  <p key={index} className="text-sm text-red-600">{error}</p>
-                ))}
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Password *
-                </label>
-                <input
-                  type="password"
-                  value={passwordForm.currentPassword}
-                  onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  placeholder="Enter current password"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  New Password *
-                </label>
-                <input
-                  type="password"
-                  value={passwordForm.newPassword}
-                  onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  placeholder="Enter new password (min. 6 characters)"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm New Password *
-                </label>
-                <input
-                  type="password"
-                  value={passwordForm.confirmPassword}
-                  onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                  placeholder="Confirm new password"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 mt-8">
-              <button
-                onClick={() => {
-                  setShowPasswordModal(false);
-                  setPasswordErrors([]);
-                  setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-                }}
-                className="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={updatePassword}
-                className="px-4 py-2 bg-amber-500 text-white hover:bg-amber-600 rounded-lg transition-colors"
-              >
-                Update Password
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
->>>>>>> 6f4220bdf6e446d714f6ce8799392dc31ec929ae
       <Footer />
     </div>
   );

@@ -40,4 +40,21 @@ app.use('/api/admin', adminRouter);
 app.use('/api/', UserRoute);
 app.use('/api/seller', SellerRouter);
 
-app.listen(PORT, () => console.log(`Server is running at port ${PORT}`));
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`Server is running at port ${port}`);
+  });
+
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      const nextPort = Number(port) + 1;
+      console.warn(`Port ${port} is in use. Retrying on ${nextPort}...`);
+      startServer(nextPort);
+      return;
+    }
+
+    console.error('Server startup error:', error.message);
+  });
+};
+
+startServer(PORT);

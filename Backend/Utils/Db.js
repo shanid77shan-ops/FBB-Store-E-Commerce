@@ -6,6 +6,7 @@ const databaseConnection = async () => {
         // because they are no longer needed in newer Node versions.
         await mongoose.connect(process.env.MONGO_URI);
         console.log("✅ MongoDB Connected Successfully");
+        return true;
     } catch (error) {
         console.error("❌ MongoDB Connection Error:");
         console.error(error.message);
@@ -14,8 +15,9 @@ const databaseConnection = async () => {
         if (error.message.includes('ECONNREFUSED')) {
             console.log("👉 Tip: Your ISP might be blocking MongoDB. Try the long-form MONGO_URI in your .env file.");
         }
-        
-        process.exit(1); // Stop the server if DB fails
+
+        // Keep API process alive so the app doesn't crash in dev when DB/network is temporarily unavailable.
+        return false;
     }
 };
 
