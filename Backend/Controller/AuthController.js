@@ -3,13 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { OAuth2Client } from "google-auth-library";
-import { 
-  sendOtpEmail, 
-  sendOrderConfirmationEmail, 
-  sendSellerNewOrderEmail,
-  sendPasswordResetEmail,
-  sendOrderStatusUpdateEmail 
-} from "../Utils/emailService.js";
+import emailService from "../Utils/emailService.js";
 
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -72,7 +66,7 @@ export const register = async (req, res) => {
 
     await user.save();
 
-  const emailSent = await sendOtpEmail(email, otp);
+    const emailSent = await emailService.sendOtpEmail(email, otp);
     
     if (!emailSent) {
       await UserModel.findByIdAndDelete(user._id);
@@ -200,7 +194,7 @@ export const resendOtp = async (req, res) => {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    const emailSent = await sendOtpEmail(email, otp);
+    const emailSent = await emailService.sendOtpEmail(email, otp);
     
     if (!emailSent) {
       return res.status(500).json({
@@ -565,7 +559,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const emailSent = await sendPasswordResetEmail(email, resetToken);
+    const emailSent = await emailService.sendPasswordResetEmail(email, resetToken);
     
     if (!emailSent) {
       return res.status(500).json({

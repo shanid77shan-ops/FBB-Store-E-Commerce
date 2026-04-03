@@ -1059,10 +1059,7 @@ import productModel from "../Model/ProductModel.js";
 import categoryModel from "../Model/CategoryModel.js";
 import OrderModel from "../Model/OrderModel.js";
 import mongoose from "mongoose";
-<<<<<<< HEAD
-=======
 import emailService from "../Utils/emailService.js";
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export const SignUp = async(req,res)=>{
     try {
@@ -1681,13 +1678,8 @@ export const getSellerProfile = async (req, res) => {
 
 export const getSellerOrders = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const sellerId = req.user?.userId;
-    
-=======
     const sellerId = req.sellerId 
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (!sellerId) {
       return res.status(400).json({
         success: false,
@@ -1698,20 +1690,6 @@ export const getSellerOrders = async (req, res) => {
     const orders = await OrderModel.find({
       "sellerOrders.seller": sellerId
     })
-<<<<<<< HEAD
-    .populate('user', 'name email phone')
-    .populate({
-      path: 'items.product',
-      select: 'name brand images'
-    })
-    .sort({ createdAt: -1 });
-
-    const formattedOrders = orders.map(order => {
-      const sellerOrder = order.sellerOrders.find(so => 
-        so.seller.toString() === sellerId.toString()
-      );
-      
-=======
       .populate("user", "name email phone")
       .populate({
         path: "items.product",
@@ -1724,15 +1702,10 @@ export const getSellerOrders = async (req, res) => {
         so => so.seller.toString() === sellerId.toString()
       );
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       return {
         orderId: order.orderId,
         createdAt: order.createdAt,
         user: order.user,
-<<<<<<< HEAD
-        items: order.items.filter(item => 
-          item.seller.toString() === sellerId.toString()
-=======
         shippingAddress: order.shippingAddress,
         billingAddress: order.billingAddress,
         paymentMethod: order.paymentMethod,
@@ -1740,21 +1713,12 @@ export const getSellerOrders = async (req, res) => {
         orderStatus: order.status,
         items: order.items.filter(
           item => item.seller.toString() === sellerId.toString()
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
         ),
         subtotal: sellerOrder?.subtotal || 0,
         shipping: sellerOrder?.shipping || 0,
         tax: sellerOrder?.tax || 0,
         total: sellerOrder?.total || 0,
-<<<<<<< HEAD
-        sellerStatus: sellerOrder?.sellerStatus || 'pending',
-        trackingNumber: sellerOrder?.trackingNumber,
-        shippedAt: sellerOrder?.shippedAt,
-        orderStatus: order.status,
-        paymentStatus: order.paymentStatus
-=======
         sellerStatus: sellerOrder?.sellerStatus || "pending"
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       };
     });
 
@@ -1774,19 +1738,6 @@ export const getSellerOrders = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId, status, trackingNumber } = req.body;
-<<<<<<< HEAD
-    const sellerId = req.user?.userId;
-
-    if (!orderId || !status) {
-      return res.status(400).json({
-        success: false,
-        message: "Order ID and status are required"
-      });
-    }
-
-    const order = await OrderModel.findOne({ orderId });
-    
-=======
     const sellerId = req.sellerId;
 
     if (!orderId || !status || !sellerId) {
@@ -1811,7 +1762,6 @@ export const updateOrderStatus = async (req, res) => {
         select: 'email name'
       });
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (!order) {
       return res.status(404).json({
         success: false,
@@ -1819,41 +1769,20 @@ export const updateOrderStatus = async (req, res) => {
       });
     }
 
-<<<<<<< HEAD
-    const sellerOrder = order.sellerOrders.find(so => 
-      so.seller.toString() === sellerId.toString()
-=======
     const sellerObjectId = new mongoose.Types.ObjectId(sellerId);
 
     const sellerOrder = order.sellerOrders.find(
       so => so.seller._id.equals(sellerObjectId)
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     );
 
     if (!sellerOrder) {
       return res.status(403).json({
         success: false,
-<<<<<<< HEAD
-        message: "You are not authorized to update this order"
-=======
         message: "Seller not authorized for this order"
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
       });
     }
 
     sellerOrder.sellerStatus = status;
-<<<<<<< HEAD
-    
-    if (status === 'shipped' && trackingNumber) {
-      sellerOrder.trackingNumber = trackingNumber;
-      sellerOrder.shippedAt = new Date();
-    }
-
-    order.items.forEach(item => {
-      if (item.seller.toString() === sellerId.toString()) {
-        item.itemStatus = status;
-        if (status === 'shipped' && trackingNumber) {
-=======
 
     order.items.forEach(item => {
       if (item.seller.equals(sellerObjectId)) {
@@ -1862,41 +1791,11 @@ export const updateOrderStatus = async (req, res) => {
         if (status === "delivered") item.itemStatus = "delivered";
 
         if (status === "shipped" && trackingNumber) {
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
           item.trackingNumber = trackingNumber;
         }
       }
     });
 
-<<<<<<< HEAD
-    await order.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Order status updated successfully",
-      order: order
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update order status",
-      error: error.message
-    });
-  }
-};
-
-export const getSellerDashboardStats = async (req, res) => {
-  try {
-    const sellerId = req.user?.userId;
-    
-    if (!sellerId) {
-      return res.status(400).json({
-        success: false,
-        message: "Seller ID is required"
-      });
-    }
-
-=======
     const sellerStatuses = order.sellerOrders.map(so => so.sellerStatus);
 
     if (sellerStatuses.every(s => s === "delivered")) {
@@ -2001,7 +1900,6 @@ export const getSellerDashboardStats = async (req, res) => {
       });
     }
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     const totalProducts = await productModel.countDocuments({ 
       seller: sellerId,
       active: true 
@@ -2054,8 +1952,6 @@ export const getSellerDashboardStats = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 export const getSalesReport = async (req, res) => {
   try {
     const sellerId = req.sellerId;
@@ -2255,7 +2151,6 @@ export const getSalesReport = async (req, res) => {
   }
 };
 
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 export default {
   SignUp,
   login,
@@ -2268,11 +2163,7 @@ export default {
   getSellerProfile,
   getSellerOrders,
   updateOrderStatus,
-<<<<<<< HEAD
-  getSellerDashboardStats
-=======
   updateReturnStatus,
   getSellerDashboardStats,
   getSalesReport
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 };
