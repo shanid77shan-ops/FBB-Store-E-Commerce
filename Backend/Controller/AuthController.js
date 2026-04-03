@@ -1,6 +1,7 @@
 import UserModel from "../Model/UserModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 import { OAuth2Client } from "google-auth-library";
 import { 
   sendOtpEmail, 
@@ -9,8 +10,6 @@ import {
   sendPasswordResetEmail,
   sendOrderStatusUpdateEmail 
 } from "../Utils/emailService.js";
-
-import emailService from "../Utils/emailService.js";
 
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -73,11 +72,7 @@ export const register = async (req, res) => {
 
     await user.save();
 
-<<<<<<< HEAD
-    const emailSent = await sendOtpEmail(email, otp);
-=======
-    const emailSent = await emailService.sendOtpEmail(email, otp);
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
+  const emailSent = await sendOtpEmail(email, otp);
     
     if (!emailSent) {
       await UserModel.findByIdAndDelete(user._id);
@@ -570,11 +565,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-<<<<<<< HEAD
     const emailSent = await sendPasswordResetEmail(email, resetToken);
-=======
-    const emailSent = await emailService.sendPasswordResetEmail(email, resetToken);
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     
     if (!emailSent) {
       return res.status(500).json({
@@ -665,8 +656,6 @@ export const updateNotificationPreferences = async (req, res) => {
       message: "Internal server error"
     });
   }
-<<<<<<< HEAD
-=======
 };
 
 export const getAddresses = async (req, res) => {
@@ -906,5 +895,4 @@ export const updatePassword = async (req, res) => {
       message: "Internal server error"
     });
   }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 };

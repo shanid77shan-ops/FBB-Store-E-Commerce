@@ -216,11 +216,6 @@ export const removeFromCart = async (req, res) => {
     const { cartItemId } = req.params;
 
     const user = await getUser(req);
-<<<<<<< HEAD
-    
-    const cartItem = user.cart.id(cartItemId);
-    if (!cartItem) {
-=======
 
     if (!user) {
       return res.status(401).json({
@@ -229,23 +224,15 @@ export const removeFromCart = async (req, res) => {
       });
     }
 
-    const cartItemExists = user.cart.some(
-      item => item.product.toString() === cartItemId
-    );
-
-    if (!cartItemExists) {
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
+    const cartItem = user.cart.id(cartItemId);
+    if (!cartItem) {
       return res.status(404).json({
         success: false,
         message: "Cart item not found"
       });
     }
 
-<<<<<<< HEAD
     cartItem.remove();
-=======
-    user.cart.pull({ product: cartItemId });
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     await user.save();
 
     await user.populate({
@@ -268,11 +255,7 @@ export const removeFromCart = async (req, res) => {
     });
 
   } catch (error) {
-<<<<<<< HEAD
     console.error('Error removing from cart:', error);
-=======
-    console.error("Error removing from cart:", error);
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     res.status(500).json({
       success: false,
       message: "Failed to remove from cart",
@@ -281,27 +264,11 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 export const clearCart = async (req, res) => {
   try {
     const user = await getUser(req);
     user.cart = [];
     await user.save();
-
-=======
-
-
-
-export const clearCart = async (req, res) => {
-  try {
-    console.log("matyy")
-    const user = await getUser(req);
-    // console.log(user)
-    user.cart = [];
-    await user.save();
-
-
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     res.status(200).json({
       success: true,
       message: "Cart cleared",
@@ -864,10 +831,6 @@ export const createOrder = async (req, res) => {
       await product.save({ session });
     }
 
-<<<<<<< HEAD
-    console.log(insufficientStockItems,"itmesss")
-=======
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     if (insufficientStockItems.length > 0) {
       await session.abortTransaction();
       session.endSession();

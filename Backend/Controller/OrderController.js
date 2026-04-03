@@ -489,81 +489,6 @@ export const getOrder = async (req, res) => {
 };
 
 export const getUserOrders = async (req, res) => {
-<<<<<<< HEAD
-    try {
-      const userId = req.user._id;
-  
-      const orders = await OrderModel.find({ user: userId })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: 'items.product',
-          select: 'name brand images priceINR priceAED'
-        })
-        .populate({
-          path: 'items.seller',
-          select: 'name companyName'
-        })
-        .populate({
-          path: 'sellerOrders.seller',
-          select: 'name companyName'
-        });
-  
-      const formattedOrders = orders.map(order => ({
-        _id: order._id,
-        orderId: order.orderId,
-        createdAt: order.createdAt,
-        status: order.status,
-        paymentStatus: order.paymentStatus,
-        paymentMethod: order.paymentMethod,
-        total: order.total,
-        subtotal: order.subtotal,
-        shipping: order.shipping,
-        tax: order.tax,
-        itemsCount: order.items?.length || 0,
-        items: order.items?.map(item => ({
-          _id: item._id,
-          product: item.product
-            ? {
-                _id: item.product._id,
-                name: item.product.name,
-                brand: item.product.brand,
-                images: item.product.images,
-                priceINR: item.product.priceINR,
-                priceAED: item.product.priceAED
-              }
-            : null,
-          quantity: item.quantity,
-          price: item.price,
-          selectedColor: item.selectedColor,
-          selectedSize: item.selectedSize,
-          itemStatus: item.itemStatus,
-          sellerStatus: item.sellerStatus,
-          cancellationReason: item.cancellationReason,
-          returnStatus: item.returnStatus,
-          returnReason: item.returnReason
-        })) || [],
-        sellers: order.sellerOrders?.map(so => ({
-          name: so.seller?.name || "Unknown Seller",
-          status: so.sellerStatus || "pending"
-        })) || [],
-        shippingAddress: order.shippingAddress,
-        billingAddress: order.billingAddress
-      }));
-  
-      res.status(200).json({
-        success: true,
-        orders: formattedOrders,
-        count: formattedOrders.length
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Failed to get orders",
-        error: error.message
-      });
-    }
-  };
-=======
   try {
     const userId = req.user._id;
 
@@ -640,7 +565,6 @@ export const getUserOrders = async (req, res) => {
     });
   }
 };
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
 
 export const getOrderDetails = async (req, res) => {
   try {
@@ -649,12 +573,8 @@ export const getOrderDetails = async (req, res) => {
 
     const order = await OrderModel.findOne({ 
       orderId,
-<<<<<<< HEAD
-      user: userId 
-=======
       user: userId,
       status: { $ne: "temporary" }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     })
     .populate([
       {
@@ -732,12 +652,8 @@ export const cancelOrderItem = async (req, res) => {
 
     const order = await OrderModel.findOne({ 
       orderId,
-<<<<<<< HEAD
-      user: userId 
-=======
       user: userId,
       status: { $ne: "temporary" }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     }).session(session);
 
     if (!order) {
@@ -837,12 +753,8 @@ export const cancelOrder = async (req, res) => {
 
     const order = await OrderModel.findOne({ 
       orderId,
-<<<<<<< HEAD
-      user: userId 
-=======
       user: userId,
       status: { $ne: "temporary" }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     }).session(session);
 
     if (!order) {
@@ -920,12 +832,8 @@ export const requestReturn = async (req, res) => {
 
     const order = await OrderModel.findOne({ 
       orderId,
-<<<<<<< HEAD
-      user: userId 
-=======
       user: userId,
       status: { $ne: "temporary" }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     });
 
     if (!order) {
@@ -1005,12 +913,8 @@ export const trackOrder = async (req, res) => {
 
     const order = await OrderModel.findOne({ 
       orderId,
-<<<<<<< HEAD
-      user: userId 
-=======
       user: userId,
       status: { $ne: "temporary" }
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     })
     .populate({
       path: 'items.product',
@@ -1077,14 +981,10 @@ export const updateOrderStatus = async (req, res) => {
     const { orderId, itemId, status, trackingNumber, shippingProvider, sellerNotes } = req.body;
     const sellerId = req.seller._id;
 
-<<<<<<< HEAD
-    const order = await OrderModel.findOne({ orderId });
-=======
     const order = await OrderModel.findOne({ 
       orderId,
       status: { $ne: "temporary" }
     });
->>>>>>> 74c9384bf38b2180d20dafae9683580e612f07ff
     
     if (!order) {
       return res.status(404).json({
